@@ -31,6 +31,8 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.SqlTools.ServiceLayer.Utility;
 
 namespace Microsoft.SqlTools.ServiceLayer.Connection.ReliableConnection
@@ -233,7 +235,33 @@ SET NUMERIC_ROUNDABORT OFF;";
         /// </summary>
         public override void Open()
         {
-            OpenConnection();
+            // Check if retry policy was specified, if not, disable retries by executing the Open method using RetryPolicy.NoRetry.
+            _connectionRetryPolicy.ExecuteAction(() =>
+            {
+                if (_underlyingConnection.State != ConnectionState.Open)
+                {
+                    _underlyingConnection.Open();
+                }
+                SetLockAndCommandTimeout(_underlyingConnection);
+                SetDefaultAnsiSettings(_underlyingConnection);
+            });
+        }
+
+        /// <summary>
+        /// Opens a database connection asynchronously with the option of cancelling the connection request
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        public override async Task OpenAsync(CancellationToken cancellationToken)
+        {
+            await _connectionRetryPolicy.ExecuteAction(async () =>
+            {
+                if (_underlyingConnection.State != ConnectionState.Open)
+                {
+                    await _underlyingConnection.OpenAsync(cancellationToken);
+                }
+            });
+            SetLockAndCommandTimeout(_underlyingConnection);
+            SetDefaultAnsiSettings(_underlyingConnection);
         }
 
         /// <summary>
@@ -327,26 +355,6 @@ SET NUMERIC_ROUNDABORT OFF;";
         private void RetryConnectionCallback(RetryState retryState)
         {
             RetryPolicyUtils.RaiseSchemaAmbientRetryMessage(retryState, SqlSchemaModelErrorCodes.ServiceActions.ConnectionRetry, _azureSessionId); 
-        }
-
-        /// <summary>
-        /// Opens a database connection with the settings specified by the ConnectionString and ConnectionRetryPolicy properties.
-        /// </summary>
-        /// <returns>An object representing the open connection.</returns>
-        private SqlConnection OpenConnection()
-        {
-            // Check if retry policy was specified, if not, disable retries by executing the Open method using RetryPolicy.NoRetry.
-            _connectionRetryPolicy.ExecuteAction(() =>
-            {
-                if (_underlyingConnection.State != ConnectionState.Open)
-                {
-                    _underlyingConnection.Open();
-                }
-                SetLockAndCommandTimeout(_underlyingConnection);
-                SetDefaultAnsiSettings(_underlyingConnection);
-            });
-
-            return _underlyingConnection;
         }
 
         public void OnConnectionStateChange(object sender, StateChangeEventArgs e)

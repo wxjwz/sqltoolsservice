@@ -4,8 +4,6 @@
 //
 
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Threading.Tasks;
 using Microsoft.SqlTools.ServiceLayer.Connection;
 using Microsoft.SqlTools.ServiceLayer.Connection.Contracts;
 using Microsoft.SqlTools.Test.Utility;
@@ -13,7 +11,6 @@ using Xunit;
 using Microsoft.SqlTools.ServiceLayer.QueryExecution;
 using Microsoft.SqlTools.ServiceLayer.SqlContext;
 using Microsoft.SqlTools.ServiceLayer.Test.QueryExecution;
-using Microsoft.SqlTools.ServiceLayer.Workspace.Contracts;
 
 namespace Microsoft.SqlTools.ServiceLayer.IntegrationTests.Connection
 {
@@ -35,7 +32,7 @@ namespace Microsoft.SqlTools.ServiceLayer.IntegrationTests.Connection
                 string uri = connectionInfo.OwnerUri;
 
                 // We should see one ConnectionInfo and one DbConnection
-                Assert.Equal(1, connectionInfo.CountConnections);
+                Assert.Equal(1, connectionInfo.Connections.Count);
                 Assert.Equal(1, service.OwnerToConnectionMap.Count);
 
                 // If we run a query
@@ -45,7 +42,7 @@ namespace Microsoft.SqlTools.ServiceLayer.IntegrationTests.Connection
                 query.ExecutionTask.Wait();
 
                 // We should see two DbConnections
-                Assert.Equal(2, connectionInfo.CountConnections);
+                Assert.Equal(2, connectionInfo.Connections.Count);
 
                 // If we run another query
                 query = new Query(Common.StandardQuery, connectionInfo, new QueryExecutionSettings(), fileStreamFactory);
@@ -53,7 +50,7 @@ namespace Microsoft.SqlTools.ServiceLayer.IntegrationTests.Connection
                 query.ExecutionTask.Wait();
 
                 // We should still have 2 DbConnections
-                Assert.Equal(2, connectionInfo.CountConnections);
+                Assert.Equal(2, connectionInfo.Connections.Count);
 
                 // If we disconnect, we should remain in a consistent state to do it over again
                 // e.g. loop and do it over again
@@ -84,10 +81,7 @@ namespace Microsoft.SqlTools.ServiceLayer.IntegrationTests.Connection
             query.ExecutionTask.Wait();
 
             // All open DbConnections (Query and Default) should have initialDatabaseName as their database
-            foreach (DbConnection connection in connectionInfo.AllConnections)
-            {
-                Assert.Equal(connection.Database, initialDatabaseName);
-            }
+            Assert.All(connectionInfo.Connections, conn => Assert.Equal(initialDatabaseName, conn.Value.Database));
 
             // If we run a query to change the database
             query = new Query(changeDatabaseQuery, connectionInfo, new QueryExecutionSettings(), fileStreamFactory);
@@ -95,10 +89,7 @@ namespace Microsoft.SqlTools.ServiceLayer.IntegrationTests.Connection
             query.ExecutionTask.Wait();
 
             // All open DbConnections (Query and Default) should have newDatabaseName as their database
-            foreach (DbConnection connection in connectionInfo.AllConnections)
-            {
-                Assert.Equal(connection.Database, newDatabaseName);
-            }
+            Assert.All(connectionInfo.Connections, conn => Assert.Equal(newDatabaseName, conn.Value.Database));
         }
     }
 }

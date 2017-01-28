@@ -303,7 +303,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
             {
                 try
                 {
-                    foreach (DbConnection connection in info.AllConnections)
+                    foreach (DbConnection connection in info.Connections.Values)
                     {
                         if (connection.State == ConnectionState.Open)
                         {
@@ -488,7 +488,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
 
             try
             {
-                await connectionInfo.TryOpenConnection(connectionParams.Type);
+                await connectionInfo.OpenConnection(connectionParams.Type);
             }
             catch (SqlException ex)
             {
@@ -550,7 +550,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
             }
 
             // If the ConnectionInfo has no more connections, remove the ConnectionInfo
-            if (info.CountConnections == 0)
+            if (info.Connections.Count == 0)
             {
                 OwnerToConnectionMap.Remove(disconnectParams.OwnerUri);
             }
@@ -578,7 +578,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
             ICollection<DbConnection> connectionsToDisconnect = new List<DbConnection>();
             if (connectionType == null)
             {
-                connectionsToDisconnect = connectionInfo.AllConnections;
+                connectionsToDisconnect = connectionInfo.Connections.Values;
             }
             else
             {

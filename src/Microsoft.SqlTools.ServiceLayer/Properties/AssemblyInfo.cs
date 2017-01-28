@@ -44,3 +44,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Microsoft.SqlTools.ServiceLayer.Test")]
 [assembly: InternalsVisibleTo("Microsoft.SqlTools.ServiceLayer.IntegrationTests")]
 [assembly: InternalsVisibleTo("Microsoft.SqlTools.ServiceLayer.Test.Common")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]      // Required for Moq

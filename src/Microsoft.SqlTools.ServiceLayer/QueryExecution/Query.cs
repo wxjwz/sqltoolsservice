@@ -99,10 +99,7 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
             Validate.IsNotNull(nameof(outputFactory), outputFactory);
 
             // Get the connection we'll use for querying
-            if (!connection.TryGetConnection(ConnectionType.Query, out dbConnection))
-            {
-                throw new InvalidOperationException(SR.QueryServiceQueryConnectionMissing);
-            }
+            dbConnection = connection.GetOrOpenConnection(ConnectionType.Query).Result;
 
             // Initialize the internal state
             QueryText = queryText;

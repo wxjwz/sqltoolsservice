@@ -683,7 +683,7 @@ namespace Microsoft.SqlTools.ServiceLayer.IntegrationTests.Connection
         {
             var result = TestObjects.InitLiveConnectionInfo();
             ConnectionInfo connInfo = result.ConnectionInfo;
-            DbConnection connection = connInfo.ConnectionTypeToConnectionMap[ConnectionType.Default];
+            DbConnection connection = connInfo.Connections[ConnectionType.Default];
 
 
             Assert.True(ReliableConnectionHelper.IsAuthenticatingDatabaseMaster(connection));

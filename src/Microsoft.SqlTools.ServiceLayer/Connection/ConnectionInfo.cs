@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,10 +22,8 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
     {
         #region Member Variables
 
-        private readonly ConcurrentDictionary<string, CancellationTokenSource> connectionTypeToCancellationSourceMap =
-                    new ConcurrentDictionary<string, CancellationTokenSource>();
-
-        private readonly object cancellationTokenSourceLock = new object();
+        private readonly ConcurrentDictionary<string, ConnectionWithCancel> connectionMap =
+            new ConcurrentDictionary<string, ConnectionWithCancel>();
 
         #endregion
 
@@ -33,7 +32,6 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
         /// </summary>
         public ConnectionInfo(ISqlConnectionFactory factory, string ownerUri, ConnectionDetails details)
         {
-            ConnectionTypeToConnectionMap = new ConcurrentDictionary<string, DbConnection>();
             Factory = factory;
             OwnerUri = ownerUri;
             ConnectionDetails = details;
@@ -42,6 +40,11 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
         }
 
         #region Properties
+
+        public IDictionary<string, DbConnection> Connections
+        {
+            get { return connectionMap.ToImmutableDictionary(kvp => kvp.Key, kvp => kvp.Value.Connection); }
+        }
 
         /// <summary>
         /// Unique Id, helpful to identify a connection info object
@@ -83,31 +86,67 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
         /// </summary>
         public int MajorVersion { get; set; }
 
-        /// <summary>
-        /// All DbConnection instances held by this ConnectionInfo
-        /// </summary>
-        public ICollection<DbConnection> AllConnections => ConnectionTypeToConnectionMap.Values;
-
-        /// <summary>
-        /// All connection type strings held by this ConnectionInfo
-        /// </summary>
-        public ICollection<string> AllConnectionTypes => ConnectionTypeToConnectionMap.Keys;
-
-        /// <summary>
-        /// The count of DbConnectioninstances held by this ConnectionInfo 
-        /// </summary>
-        public int CountConnections => ConnectionTypeToConnectionMap.Count;
-
-        /// <summary>
-        /// A map containing all connections to the database that are associated with 
-        /// this ConnectionInfo's OwnerUri.
-        /// This is internal for testing access only
-        /// </summary>
-        internal ConcurrentDictionary<string, DbConnection> ConnectionTypeToConnectionMap { get; set; }
-
         #endregion
 
         #region Public Methods
+
+        //public bool CancelConnection(string connectionType)
+        //{
+        //    Validate.IsNotNullOrWhitespaceString(nameof(connectionType), connectionType);
+
+        //    // Attempt to find the connection for the owner uri
+        //    ConnectionWithCancel connection;
+        //    if (!connectionMap.TryGetValue(connectionType, out connection))
+        //    {
+        //        throw new ArgumentOutOfRangeException(nameof(connectionType), "Requested connection type is not in progress of connecting");
+        //    }
+        //    return ;
+        //}
+
+        public Task<DbConnection> GetOrOpenConnection(string connectionType)
+        {
+            // Attempt to get the connection first
+            ConnectionWithCancel connection;
+            if (connectionMap.TryGetValue(connectionType, out connection))
+            {
+                return Task.FromResult(connection.Connection);
+            }
+
+            // If that fails, open a new connection
+            return OpenConnection(connectionType);
+        }
+
+        /// <summary>
+        /// Adds a DbConnection to this object and associates it with the given 
+        /// connection type string. If a connection already exists with an identical 
+        /// connection type string, it is not overwritten. Ignores calls where connectionType = null
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown when connectionType is null or empty</exception>
+        public async Task<DbConnection> OpenConnection(string connectionType)
+        {
+            Validate.IsNotNullOrWhitespaceString(nameof(connectionType), connectionType);
+
+            // Create a new connection or cancel an existing connect attempt
+            ConnectionWithCancel connection = connectionMap.AddOrUpdate(connectionType,
+                ct => new ConnectionWithCancel
+                {
+                    Connection = Factory.CreateSqlConnection(ConnectionDetails.GetConnectionString())
+                }, (ct, cancel) =>
+                {
+                    // If cancellation fails (b/c it has already been cancelled), throw
+                    if (!cancel.CancelSource.IsCancellationRequested)
+                    {
+                        throw new InvalidOperationException("Connection type is already connected");
+                    }
+                    cancel.CancelSource.Cancel();
+                    return cancel;
+                });
+
+            // Open the connection async
+            await connection.Connection.OpenAsync(connection.CancelSource.Token);
+            connection.CancelSource.Cancel();
+            return connection.Connection;
+        }
 
         /// <summary>
         /// Try to get the DbConnection associated with the given connection type string. 
@@ -118,77 +157,15 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
         public bool TryGetConnection(string connectionType, out DbConnection connection)
         {
             Validate.IsNotNullOrEmptyString(nameof(connectionType), connectionType);
-            return ConnectionTypeToConnectionMap.TryGetValue(connectionType, out connection);
-        }
 
-        /// <summary>
-        /// Adds a DbConnection to this object and associates it with the given 
-        /// connection type string. If a connection already exists with an identical 
-        /// connection type string, it is not overwritten. Ignores calls where connectionType = null
-        /// </summary>
-        /// <exception cref="ArgumentException">Thrown when connectionType is null or empty</exception>
-        public async Task<DbConnection> TryOpenConnection(string connectionType)
-        {
-            Validate.IsNotNullOrWhitespaceString(nameof(connectionType), connectionType);
-
-            // create a sql connection instance
-            DbConnection connection = Factory.CreateSqlConnection(ConnectionDetails.GetConnectionString());
-            ConnectionTypeToConnectionMap.TryAdd(connectionType, connection);
-
-            CancellationTokenSource source = null;
-            try
+            ConnectionWithCancel conn;
+            if (connectionMap.TryGetValue(connectionType, out conn))
             {
-                using (source = new CancellationTokenSource())
-                {
-
-                    // Locking here to perform two operations as one atomic operation
-                    lock (cancellationTokenSourceLock)
-                    {
-                        // If the URI is currently connecting from a different request, cancel it before we try to connect
-                        CancellationTokenSource currentSource;
-                        if (connectionTypeToCancellationSourceMap.TryGetValue(connectionType, out currentSource))
-                        {
-                            currentSource.Cancel();
-                        }
-                        connectionTypeToCancellationSourceMap[connectionType] = source;
-                    }
-
-                    // Create a task to handle cancellation requests
-                    var cancellationTask = Task.Run(() =>
-                    {
-                        source.Token.WaitHandle.WaitOne();
-                        try
-                        {
-                            source.Token.ThrowIfCancellationRequested();
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                            // Ignore
-                        }
-                    });
-                    var openTask = connection.OpenAsync(source.Token);
-
-                    // Open the connection
-                    await Task.WhenAny(openTask, cancellationTask).Unwrap();
-                    source.Cancel();
-                }
+                connection = conn.Connection;
+                return true;
             }
-            finally
-            {
-                // Remove our cancellation token from the map since we're no longer connecting
-                // Using a lock here to perform two operations as one atomic operation
-                lock (cancellationTokenSourceLock)
-                {
-                    // Only remove the token from the map if it is the same one created by this request
-                    CancellationTokenSource sourceValue;
-                    if (connectionTypeToCancellationSourceMap.TryGetValue(connectionType, out sourceValue) && sourceValue == source)
-                    {
-                        connectionTypeToCancellationSourceMap.TryRemove(connectionType, out sourceValue);
-                    }
-                }
-            }
-
-            return connection;
+            connection = null;
+            return false;
         }
 
         /// <summary>
@@ -199,23 +176,14 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
         {
             Validate.IsNotNullOrEmptyString(nameof(connectionType), connectionType);
 
-            // Cancel any current connection attempts for this connection
-            CancellationTokenSource source;
-            if (connectionTypeToCancellationSourceMap.TryGetValue(connectionType, out source))
+            ConnectionWithCancel conn;
+            if (connectionMap.TryRemove(connectionType, out conn))
             {
-                try
+                if (!conn.CancelSource.IsCancellationRequested)
                 {
-                    source.Cancel();
-                }
-                catch
-                {
-                    // Ignore
+                    conn.CancelSource.Cancel();
                 }
             }
-
-            // Remove the connection from the map
-            DbConnection connection;
-            ConnectionTypeToConnectionMap.TryRemove(connectionType, out connection);
         }
 
         /// <summary>
@@ -223,13 +191,32 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
         /// </summary>
         public void RemoveAllConnections()
         {
-            foreach (var type in AllConnectionTypes)
+            foreach (string connType in connectionMap.Keys)
             {
-                DbConnection connection;
-                ConnectionTypeToConnectionMap.TryRemove(type, out connection);
+                RemoveConnection(connType);
             }
         }
 
         #endregion
+
+        private class ConnectionWithCancel : IDisposable
+        {
+            public DbConnection Connection { get; set; }
+            public CancellationTokenSource CancelSource { get; }
+
+            public ConnectionWithCancel()
+            {
+                CancelSource = new CancellationTokenSource();
+            }
+
+            public void Dispose()
+            {
+                if (!CancelSource.IsCancellationRequested)
+                {
+                    CancelSource.Cancel();
+                }
+                CancelSource.Dispose();
+            }
+        }
     }
 }

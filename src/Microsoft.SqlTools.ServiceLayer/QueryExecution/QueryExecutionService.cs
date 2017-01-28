@@ -351,7 +351,7 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
                     await requestContext.SendError(SR.QueryServiceQueryInvalidOwnerUri);
                     return null;
                 }
-                await connectionInfo.TryOpenConnection(ConnectionType.Query);
+                await connectionInfo.GetOrOpenConnection(ConnectionType.Query);
 
                 // Attempt to clean out any old query on the owner URI
                 Query oldQuery;
