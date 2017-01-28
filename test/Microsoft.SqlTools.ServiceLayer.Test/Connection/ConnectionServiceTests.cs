@@ -351,13 +351,12 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.Connection
             Assert.NotEmpty(connectionResult.ConnectionId);
 
             // register disconnect callback
-            connectionService.RegisterOnDisconnectTask(
-                (result, uri) => { 
-                    callbackInvoked = true;
-                    Assert.True(uri.Equals(ownerUri));
-                    return Task.FromResult(true);
-                }
-            );
+            connectionService.OnDisconnect += (result, uri) =>
+            {
+                callbackInvoked = true;
+                Assert.True(uri.Equals(ownerUri));
+                return Task.FromResult(true);
+            };
 
             // send annother connect request
             connectionResult = await
@@ -532,7 +531,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.Connection
             info.SetValue(details, propertyValue);
 
             // Test that a connection string can be created without exceptions
-            string connectionString = ConnectionService.BuildConnectionString(details);
+            string connectionString = details.GetConnectionString();
             Assert.NotNull(connectionString);
             Assert.NotEmpty(connectionString);
 
@@ -548,7 +547,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.Connection
         {
             ConnectionDetails details = TestObjects.GetTestConnectionDetails();
             details.AuthenticationType = "NotAValidAuthType";
-            Assert.Throws<ArgumentException>(() => ConnectionService.BuildConnectionString(details));
+            Assert.Throws<ArgumentException>(() => details.GetConnectionString());
         }
 
         /// <summary>
@@ -658,13 +657,12 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.Connection
             Assert.NotEmpty(connectionResult.ConnectionId);
 
             // register disconnect callback
-            connectionService.RegisterOnDisconnectTask(
-                (result, uri) => { 
-                    callbackInvoked = true;
-                    Assert.True(uri.Equals(ownerUri));
-                    return Task.FromResult(true);
-                }
-            );
+            connectionService.OnDisconnect += (result, uri) =>
+            {
+                callbackInvoked = true;
+                Assert.True(uri.Equals(ownerUri));
+                return Task.FromResult(true);
+            };
 
             // send disconnect request
             var disconnectResult =
@@ -810,12 +808,11 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.Connection
 
             // setup connection service with callback
             var connectionService = TestObjects.GetTestConnectionService();
-            connectionService.RegisterOnConnectionTask(
-                (sqlConnection) => { 
-                    callbackInvoked = true;
-                    return Task.FromResult(true); 
-                }
-            );
+            connectionService.OnConnection += (sqlConnection) =>
+            {
+                callbackInvoked = true;
+                return Task.FromResult(true);
+            };
             
             // connect to a database instance 
             var connectionResult = await connectionService.Connect(TestObjects.GetTestConnectionParams());

@@ -231,10 +231,10 @@ namespace Microsoft.SqlTools.ServiceLayer.LanguageServices
             WorkspaceService<SqlToolsSettings>.Instance.RegisterTextDocOpenCallback(HandleDidOpenTextDocumentNotification);
 
             // Register a callback for when a connection is created
-            ConnectionServiceInstance.RegisterOnConnectionTask(UpdateLanguageServiceOnConnection);
+            ConnectionServiceInstance.OnConnection += UpdateLanguageServiceOnConnection;
 
             // Register a callback for when a connection is closed
-            ConnectionServiceInstance.RegisterOnDisconnectTask(RemoveAutoCompleteCacheUriReference);
+            ConnectionServiceInstance.OnDisconnect += RemoveAutoCompleteCacheUriReference;
 
             // Store the SqlToolsContext for future use
             Context = context;

@@ -129,6 +129,10 @@ QueryServiceMessageSenderNotSql = Sender for OnInfoMessage event must be a SqlCo
 
 QueryServiceResultSetReaderNull = Reader cannot be null
 
+QueryServiceQueryConnectionFailed = Database connection for querying could not be established
+
+QueryServiceQueryConnectionMissing = Database connection for querying could not be found
+
 ### Save As Requests
 
 QueryServiceSaveAsResultSetNotComplete = Result cannot be saved until query execution has completed

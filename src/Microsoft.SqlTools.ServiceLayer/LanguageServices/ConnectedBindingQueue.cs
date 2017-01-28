@@ -80,7 +80,7 @@ namespace Microsoft.SqlTools.ServiceLayer.LanguageServices
                     bool? originalPersistSecurityInfo = connInfo.ConnectionDetails.PersistSecurityInfo;
                     connInfo.ConnectionDetails.ConnectTimeout = Math.Max(DefaultMinimumConnectionTimeout, originalTimeout ?? 0);
                     connInfo.ConnectionDetails.PersistSecurityInfo = true;
-                    string connectionString = ConnectionService.BuildConnectionString(connInfo.ConnectionDetails);
+                    string connectionString = connInfo.ConnectionDetails.GetConnectionString();
                     connInfo.ConnectionDetails.ConnectTimeout = originalTimeout;
                     connInfo.ConnectionDetails.PersistSecurityInfo = originalPersistSecurityInfo;
 

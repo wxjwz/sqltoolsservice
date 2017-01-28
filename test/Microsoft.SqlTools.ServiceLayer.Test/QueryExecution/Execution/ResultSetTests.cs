@@ -200,7 +200,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.QueryExecution.Execution
         private static DbDataReader GetReader(Dictionary<string, string>[][] dataSet, bool throwOnRead, string query)
         {
             var info = Common.CreateTestConnectionInfo(dataSet, throwOnRead);
-            var connection = info.Factory.CreateSqlConnection(ConnectionService.BuildConnectionString(info.ConnectionDetails));
+            var connection = info.Factory.CreateSqlConnection(info.ConnectionDetails.GetConnectionString());
             var command = connection.CreateCommand();
             command.CommandText = query;
             return command.ExecuteReader();

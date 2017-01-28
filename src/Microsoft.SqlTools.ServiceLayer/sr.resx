@@ -292,6 +292,14 @@
     <value>Reader cannot be null</value>
     <comment></comment>
   </data>
+  <data name="QueryServiceQueryConnectionFailed" xml:space="preserve">
+    <value>Database connection for querying could not be established</value>
+    <comment></comment>
+  </data>
+  <data name="QueryServiceQueryConnectionMissing" xml:space="preserve">
+    <value>Database connection for querying could not be found</value>
+    <comment></comment>
+  </data>
   <data name="QueryServiceSaveAsResultSetNotComplete" xml:space="preserve">
     <value>Result cannot be saved until query execution has completed</value>
     <comment></comment>

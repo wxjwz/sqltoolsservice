@@ -192,7 +192,7 @@ namespace Microsoft.SqlTools.Test.Utility
 
         public static ServerConnection InitLiveServerConnectionForDefinition(ConnectionInfo connInfo)
         {
-            SqlConnection sqlConn = new SqlConnection(ConnectionService.BuildConnectionString(connInfo.ConnectionDetails));                                
+            SqlConnection sqlConn = new SqlConnection(connInfo.ConnectionDetails.GetConnectionString());
             return new ServerConnection(sqlConn);
         }
     }

@@ -281,7 +281,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.QueryExecution.Execution
       
         private static DbConnection GetConnection(ConnectionInfo info)
         {
-            return info.Factory.CreateSqlConnection(ConnectionService.BuildConnectionString(info.ConnectionDetails));
+            return info.Factory.CreateSqlConnection(info.ConnectionDetails.GetConnectionString());
         }
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]

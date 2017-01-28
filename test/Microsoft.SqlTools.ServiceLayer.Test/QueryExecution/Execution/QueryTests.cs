@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Castle.Components.DictionaryAdapter;
 using Microsoft.SqlTools.ServiceLayer.Connection;
 using Microsoft.SqlTools.ServiceLayer.QueryExecution;
 using Microsoft.SqlTools.ServiceLayer.QueryExecution.Contracts;
@@ -163,7 +162,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.QueryExecution.Execution
 
             // If:
             // ... I create a query from two batches (with separator)
-            ConnectionInfo ci = Common.CreateConnectedConnectionInfo(null, false);
+            ConnectionInfo ci = Common.CreateTestConnectionInfo(null, false);
 
             string queryText = string.Format("{0}\r\nGO\r\n{0}", Common.StandardQuery);
             var fileStreamFactory = Common.GetFileStreamFactory(new Dictionary<string, byte[]>());
@@ -281,7 +280,6 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.QueryExecution.Execution
             // If:
             // ... I create a query from an invalid batch
             ConnectionInfo ci = Common.CreateTestConnectionInfo(null, true);
-            ConnectionService.Instance.OwnerToConnectionMap[ci.OwnerUri] = ci;
 
             var fileStreamFactory = Common.GetFileStreamFactory(new Dictionary<string, byte[]>());
             Query query = new Query(Common.InvalidQuery, ci, new QueryExecutionSettings(), fileStreamFactory);

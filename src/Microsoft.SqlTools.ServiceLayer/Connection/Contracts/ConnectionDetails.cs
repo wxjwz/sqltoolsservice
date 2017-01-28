@@ -3,6 +3,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 //
 
+using System;
+using System.Data.SqlClient;
+
 namespace Microsoft.SqlTools.ServiceLayer.Connection.Contracts
 {
     /// <summary>
@@ -13,6 +16,8 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection.Contracts
     /// </remarks>
     public class ConnectionDetails : ConnectionSummary
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the connection password
         /// </summary>
@@ -128,5 +133,137 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection.Contracts
         /// Gets or sets a string value that indicates the type system the application expects.
         /// </summary>
         public string TypeSystemVersion { get; set; }
+
+        #endregion
+
+        /// <summary>
+        /// Build a connection string from a connection details instance
+        /// </summary>
+        public string GetConnectionString()
+        {
+            SqlConnectionStringBuilder connectionBuilder = new SqlConnectionStringBuilder
+            {
+                DataSource = ServerName,
+                UserID = UserName,
+                Password = Password
+            };
+
+            // Check for any optional parameters
+            if (!string.IsNullOrEmpty(DatabaseName))
+            {
+                connectionBuilder.InitialCatalog = DatabaseName;
+            }
+            if (!string.IsNullOrEmpty(AuthenticationType))
+            {
+                switch (AuthenticationType)
+                {
+                    case "Integrated":
+                        connectionBuilder.IntegratedSecurity = true;
+                        break;
+                    case "SqlLogin":
+                        break;
+                    default:
+                        throw new ArgumentException(SR.ConnectionServiceConnStringInvalidAuthType(AuthenticationType));
+                }
+            }
+            if (Encrypt.HasValue)
+            {
+                connectionBuilder.Encrypt = Encrypt.Value;
+            }
+            if (TrustServerCertificate.HasValue)
+            {
+                connectionBuilder.TrustServerCertificate = TrustServerCertificate.Value;
+            }
+            if (PersistSecurityInfo.HasValue)
+            {
+                connectionBuilder.PersistSecurityInfo = PersistSecurityInfo.Value;
+            }
+            if (ConnectTimeout.HasValue)
+            {
+                connectionBuilder.ConnectTimeout = ConnectTimeout.Value;
+            }
+            if (ConnectRetryCount.HasValue)
+            {
+                connectionBuilder.ConnectRetryCount = ConnectRetryCount.Value;
+            }
+            if (ConnectRetryInterval.HasValue)
+            {
+                connectionBuilder.ConnectRetryInterval = ConnectRetryInterval.Value;
+            }
+            if (!string.IsNullOrEmpty(ApplicationName))
+            {
+                connectionBuilder.ApplicationName = ApplicationName;
+            }
+            if (!string.IsNullOrEmpty(WorkstationId))
+            {
+                connectionBuilder.WorkstationID = WorkstationId;
+            }
+            if (!string.IsNullOrEmpty(ApplicationIntent))
+            {
+                ApplicationIntent intent;
+                switch (ApplicationIntent)
+                {
+                    case "ReadOnly":
+                        intent = System.Data.SqlClient.ApplicationIntent.ReadOnly;
+                        break;
+                    case "ReadWrite":
+                        intent = System.Data.SqlClient.ApplicationIntent.ReadWrite;
+                        break;
+                    default:
+                        throw new ArgumentException(SR.ConnectionServiceConnStringInvalidIntent(ApplicationIntent));
+                }
+                connectionBuilder.ApplicationIntent = intent;
+            }
+            if (!string.IsNullOrEmpty(CurrentLanguage))
+            {
+                connectionBuilder.CurrentLanguage = CurrentLanguage;
+            }
+            if (Pooling.HasValue)
+            {
+                connectionBuilder.Pooling = Pooling.Value;
+            }
+            if (MaxPoolSize.HasValue)
+            {
+                connectionBuilder.MaxPoolSize = MaxPoolSize.Value;
+            }
+            if (MinPoolSize.HasValue)
+            {
+                connectionBuilder.MinPoolSize = MinPoolSize.Value;
+            }
+            if (LoadBalanceTimeout.HasValue)
+            {
+                connectionBuilder.LoadBalanceTimeout = LoadBalanceTimeout.Value;
+            }
+            if (Replication.HasValue)
+            {
+                connectionBuilder.Replication = Replication.Value;
+            }
+            if (!string.IsNullOrEmpty(AttachDbFilename))
+            {
+                connectionBuilder.AttachDBFilename = AttachDbFilename;
+            }
+            if (!string.IsNullOrEmpty(FailoverPartner))
+            {
+                connectionBuilder.FailoverPartner = FailoverPartner;
+            }
+            if (MultiSubnetFailover.HasValue)
+            {
+                connectionBuilder.MultiSubnetFailover = MultiSubnetFailover.Value;
+            }
+            if (MultipleActiveResultSets.HasValue)
+            {
+                connectionBuilder.MultipleActiveResultSets = MultipleActiveResultSets.Value;
+            }
+            if (PacketSize.HasValue)
+            {
+                connectionBuilder.PacketSize = PacketSize.Value;
+            }
+            if (!string.IsNullOrEmpty(TypeSystemVersion))
+            {
+                connectionBuilder.TypeSystemVersion = TypeSystemVersion;
+            }
+
+            return connectionBuilder.ToString();
+        }
     }
 }

@@ -15,7 +15,6 @@ using Microsoft.SqlTools.ServiceLayer.QueryExecution.Contracts;
 using Microsoft.SqlTools.ServiceLayer.QueryExecution.DataStorage;
 using Microsoft.SqlTools.ServiceLayer.SqlContext;
 using Microsoft.SqlTools.ServiceLayer.Utility;
-using Microsoft.SqlTools.ServiceLayer.Connection.Contracts;
 using System.Collections.Generic;
 
 namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
@@ -25,10 +24,34 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
     /// </summary>
     public class Query : IDisposable
     {
+        #region Constants
+
         /// <summary>
         /// "Error" code produced by SQL Server when the database context (name) for a connection changes.
         /// </summary>
         private const int DatabaseContextChangeErrorNumber = 5701;
+
+        /// <summary>
+        /// OFF keyword
+        /// </summary>
+        private const string Off = "OFF";
+
+        /// <summary>
+        /// ON keyword
+        /// </summary>
+        private const string On = "ON";
+
+        /// <summary>
+        /// showplan_xml statement
+        /// </summary>
+        private const string SetShowPlanXml = "SET SHOWPLAN_XML {0}";
+
+        /// <summary>
+        /// statistics xml statement
+        /// </summary>
+        private const string SetStatisticsXml = "SET STATISTICS XML {0}";
+
+        #endregion
 
         #region Member Variables
 
@@ -43,10 +66,9 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         private bool disposed;
 
         /// <summary>
-        /// The connection info associated with the file editor owner URI, used to create a new
-        /// connection upon execution of the query
+        /// The connection to use for executing this query
         /// </summary>
-        private readonly ConnectionInfo editorConnection;
+        private readonly DbConnection dbConnection;
 
         /// <summary>
         /// Whether or not the execute method has been called for this query
@@ -54,34 +76,10 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         private bool hasExecuteBeenCalled;
 
         /// <summary>
-        /// Settings for query runtime 
+        /// The connection to use for executing this query, providing all SqlConnection
+        /// functionality.
         /// </summary>
-        private QueryExecutionSettings querySettings;
-
-        /// <summary>
-        /// Streaming output factory for the query 
-        /// </summary>
-        private IFileStreamFactory streamOutputFactory;
-
-        /// <summary>
-        /// ON keyword
-        /// </summary>
-        private const string On = "ON";
-
-        /// <summary>
-        /// OFF keyword
-        /// </summary>
-        private const string Off = "OFF";
-
-        /// <summary>
-        /// showplan_xml statement
-        /// </summary>
-        private const string SetShowPlanXml = "SET SHOWPLAN_XML {0}";
-
-        /// <summary>
-        /// statistics xml statement
-        /// </summary>
-        private const string SetStatisticsXml = "SET STATISTICS XML {0}";
+        private readonly ReliableSqlConnection sqlConnection;
 
         #endregion
 
@@ -89,7 +87,7 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         /// Constructor for a query
         /// </summary>
         /// <param name="queryText">The text of the query to execute</param>
-        /// <param name="connection">The information of the connection to use to execute the query</param>
+        /// <param name="connection">The connection to use to execute the query</param>
         /// <param name="settings">Settings for how to execute the query, from the user</param>
         /// <param name="outputFactory">Factory for creating output files</param>
         public Query(string queryText, ConnectionInfo connection, QueryExecutionSettings settings, IFileStreamFactory outputFactory)
@@ -100,12 +98,18 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
             Validate.IsNotNull(nameof(settings), settings);
             Validate.IsNotNull(nameof(outputFactory), outputFactory);
 
+            // Get the connection we'll use for querying
+            if (!connection.TryGetConnection(ConnectionType.Query, out dbConnection))
+            {
+                throw new InvalidOperationException(SR.QueryServiceQueryConnectionMissing);
+            }
+
             // Initialize the internal state
             QueryText = queryText;
-            editorConnection = connection;
+            sqlConnection = dbConnection as ReliableSqlConnection;
             cancellationSource = new CancellationTokenSource();
-            querySettings = settings;
-            streamOutputFactory = outputFactory;
+            var querySettings = settings;
+            var streamOutputFactory = outputFactory;
 
             // Process the query into batches
             ParseResult parseResult = Parser.Parse(queryText, new ParseOptions
@@ -136,13 +140,13 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
                 if (querySettings.ExecutionPlanOptions.IncludeEstimatedExecutionPlanXml)
                 {
                     // Enable set showplan xml
-                    addBatch(string.Format(SetShowPlanXml, On), BeforeBatches, streamOutputFactory);
-                    addBatch(string.Format(SetShowPlanXml, Off), AfterBatches, streamOutputFactory);
+                    AddBatch(string.Format(SetShowPlanXml, On), BeforeBatches, streamOutputFactory);
+                    AddBatch(string.Format(SetShowPlanXml, Off), AfterBatches, streamOutputFactory);
                 }
                 else if (querySettings.ExecutionPlanOptions.IncludeActualExecutionPlanXml)
                 {
-                    addBatch(string.Format(SetStatisticsXml, On), BeforeBatches, streamOutputFactory);
-                    addBatch(string.Format(SetStatisticsXml, Off), AfterBatches, streamOutputFactory);
+                    AddBatch(string.Format(SetStatisticsXml, On), BeforeBatches, streamOutputFactory);
+                    AddBatch(string.Format(SetStatisticsXml, Off), AfterBatches, streamOutputFactory);
                 }
             }
         }
@@ -176,14 +180,14 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         public event QueryAsyncEventHandler QueryCompleted;
 
         /// <summary>
+        /// Callback for when a query changed the db of the connection
+        /// </summary>
+        public event QueryAsyncDbChangeEventHandler QueryDbChanged;
+
+        /// <summary>
         /// Callback for when the query has failed
         /// </summary>
         public event QueryAsyncEventHandler QueryFailed;
-
-        /// <summary>
-        /// Callback for when the query connection has failed
-        /// </summary>
-        public event QueryAsyncErrorEventHandler QueryConnectionException;
 
         /// <summary>
         /// Event to be called when a resultset has completed.
@@ -193,6 +197,14 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Delegate type for callback when the db has changes
+        /// </summary>
+        /// <param name="q">The query that caused a db change</param>
+        /// <param name="newDbName">The db that the connection changed to</param>
+        /// <returns></returns>
+        public delegate Task QueryAsyncDbChangeEventHandler(Query q, string newDbName);
 
         /// <summary>
         /// Delegate type for callback when a query completes or fails
@@ -370,13 +382,11 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
                 return;
             }
 
-            // Locate and setup the connection
-            DbConnection queryConnection = await ConnectionService.Instance.GetOrOpenConnection(editorConnection.OwnerUri, ConnectionType.Query);
-            ReliableSqlConnection sqlConn = queryConnection as ReliableSqlConnection;
-            if (sqlConn != null)
+            // Add message event handler
+            if (sqlConnection != null)
             {
                 // Subscribe to database informational messages
-                sqlConn.GetUnderlyingConnection().InfoMessage += OnInfoMessage;
+                sqlConnection.GetUnderlyingConnection().InfoMessage += OnInfoMessage;
             }
 
             try
@@ -384,7 +394,7 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
                 // Execute beforeBatches synchronously, before the user defined batches 
                 foreach (Batch b in BeforeBatches)
                 {
-                    await b.Execute(queryConnection, cancellationSource.Token);
+                    await b.Execute(dbConnection, cancellationSource.Token);
                 }
 
                 // We need these to execute synchronously, otherwise the user will be very unhappy
@@ -395,13 +405,13 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
                     b.BatchCompletion += BatchCompleted;
                     b.BatchMessageSent += BatchMessageSent;
                     b.ResultSetCompletion += ResultSetCompleted;
-                    await b.Execute(queryConnection, cancellationSource.Token);
+                    await b.Execute(dbConnection, cancellationSource.Token);
                 }
 
                 // Execute afterBatches synchronously, after the user defined batches
                 foreach (Batch b in AfterBatches)
                 {
-                    await b.Execute(queryConnection, cancellationSource.Token);
+                    await b.Execute(dbConnection, cancellationSource.Token);
                 }
 
                 // Call the query execution callback
@@ -420,10 +430,10 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
             }
             finally
             {
-                if (sqlConn != null)
+                if (sqlConnection != null)
                 {
                     // Subscribe to database informational messages
-                    sqlConn.GetUnderlyingConnection().InfoMessage -= OnInfoMessage;
+                    sqlConnection.GetUnderlyingConnection().InfoMessage -= OnInfoMessage;
                 }
             }            
         }
@@ -444,7 +454,7 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
                 // Did the database context change (error code 5701)?
                 if (error.Number == DatabaseContextChangeErrorNumber)
                 {
-                    ConnectionService.Instance.ChangeConnectionDatabaseContext(editorConnection.OwnerUri, conn.Database);
+                    QueryDbChanged?.Invoke(this, conn.Database).Wait();
                 }
             }
         }
@@ -452,9 +462,18 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         /// <summary>
         /// Function to add a new batch to a Batch set
         /// </summary>
-        private void addBatch(string query, List<Batch> batchSet, IFileStreamFactory outputFactory)
+        private static void AddBatch(string query, ICollection<Batch> batchSet, IFileStreamFactory outputFactory)
         {
             batchSet.Add(new Batch(query, null, batchSet.Count, outputFactory));
+        }
+
+        /// <summary>
+        /// Does this connection support XML Execution plans
+        /// </summary>
+        private static bool DoesSupportExecutionPlan(ConnectionInfo connectionInfo)
+        {
+            // Determining which execution plan options may be applied (may be added to for pre-yukon support)
+            return (!connectionInfo.IsSqlDW && connectionInfo.MajorVersion >= 9);
         }
 
         #endregion
@@ -484,14 +503,6 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
             }
 
             disposed = true;
-        }
-
-        /// <summary>
-        /// Does this connection support XML Execution plans
-        /// </summary>
-        private bool DoesSupportExecutionPlan(ConnectionInfo connectionInfo) {
-            // Determining which execution plan options may be applied (may be added to for pre-yukon support)
-            return (!connectionInfo.IsSqlDW && connectionInfo.MajorVersion >= 9);
         }
 
         #endregion

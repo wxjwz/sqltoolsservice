@@ -309,6 +309,22 @@ namespace Microsoft.SqlTools.ServiceLayer
             }
         }
 
+        public static string QueryServiceQueryConnectionFailed
+        {
+            get
+            {
+                return Keys.GetString(Keys.QueryServiceQueryConnectionFailed);
+            }
+        }
+
+        public static string QueryServiceQueryConnectionMissing
+        {
+            get
+            {
+                return Keys.GetString(Keys.QueryServiceQueryConnectionMissing);
+            }
+        }
+
         public static string QueryServiceSaveAsResultSetNotComplete
         {
             get
@@ -605,6 +621,12 @@ namespace Microsoft.SqlTools.ServiceLayer
 
 
             public const string QueryServiceResultSetReaderNull = "QueryServiceResultSetReaderNull";
+
+
+            public const string QueryServiceQueryConnectionFailed = "QueryServiceQueryConnectionFailed";
+
+
+            public const string QueryServiceQueryConnectionMissing = "QueryServiceQueryConnectionMissing";
 
 
             public const string QueryServiceSaveAsResultSetNotComplete = "QueryServiceSaveAsResultSetNotComplete";

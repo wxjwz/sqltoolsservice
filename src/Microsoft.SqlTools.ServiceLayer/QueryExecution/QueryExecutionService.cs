@@ -26,27 +26,27 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
     {
         #region Singleton Instance Implementation
 
-        private static readonly Lazy<QueryExecutionService> instance = new Lazy<QueryExecutionService>(() => new QueryExecutionService());
+        private static readonly Lazy<QueryExecutionService> InstanceLazy = new Lazy<QueryExecutionService>(() => new QueryExecutionService());
 
         /// <summary>
         /// Singleton instance of the query execution service
         /// </summary>
-        public static QueryExecutionService Instance
-        {
-            get { return instance.Value; }
-        }
+        public static QueryExecutionService Instance => InstanceLazy.Value;
 
-        private QueryExecutionService()
+        internal QueryExecutionService()
         {
             ConnectionService = ConnectionService.Instance;
             WorkspaceService = WorkspaceService<SqlToolsSettings>.Instance;
         }
 
-        internal QueryExecutionService(ConnectionService connService, WorkspaceService<SqlToolsSettings> workspaceService)
-        {
-            ConnectionService = connService;
-            WorkspaceService = workspaceService;
-        }
+        #endregion
+
+        #region Member Variables
+
+        /// <summary>
+        /// Instance of the connection service, used to get the connection info for a given owner URI
+        /// </summary>
+        internal ConnectionService ConnectionService { private get; set; }
 
         #endregion
 
@@ -58,7 +58,7 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         /// <remarks>
         /// Made internal here to allow for overriding in unit testing
         /// </remarks>
-        internal IFileStreamFactory BufferFileStreamFactory;
+        internal IFileStreamFactory BufferFileStreamFactory { private get; set; }
 
         /// <summary>
         /// File factory to be used to create a buffer file for results
@@ -79,28 +79,23 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         /// File factory to be used to create CSV files from result sets. Set to internal in order
         /// to allow overriding in unit testing
         /// </summary>
-        internal IFileStreamFactory CsvFileFactory { get; set; }
+        internal IFileStreamFactory CsvFileFactory { private get; set; }
 
         /// <summary>
         /// File factory to be used to create JSON files from result sets. Set to internal in order
         /// to allow overriding in unit testing
         /// </summary>
-        internal IFileStreamFactory JsonFileFactory { get; set; }
+        internal IFileStreamFactory JsonFileFactory { private get; set; }
 
         /// <summary>
         /// The collection of active queries
         /// </summary>
-        internal ConcurrentDictionary<string, Query> ActiveQueries
-        {
-            get { return queries.Value; }
-        }
+        internal ConcurrentDictionary<string, Query> ActiveQueries => queries.Value;
 
         /// <summary>
-        /// Instance of the connection service, used to get the connection info for a given owner URI
+        /// The workspace service that is used to 
         /// </summary>
-        private ConnectionService ConnectionService { get; set; }
-
-        private WorkspaceService<SqlToolsSettings> WorkspaceService { get; set; }
+        internal WorkspaceService<SqlToolsSettings> WorkspaceService { private get; set; }
 
         /// <summary>
         /// Internal storage of active queries, lazily constructed as a threadsafe dictionary
@@ -108,7 +103,10 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         private readonly Lazy<ConcurrentDictionary<string, Query>> queries =
             new Lazy<ConcurrentDictionary<string, Query>>(() => new ConcurrentDictionary<string, Query>());
 
-        private SqlToolsSettings Settings { get { return WorkspaceService<SqlToolsSettings>.Instance.CurrentSettings; } }
+        /// <summary>
+        /// The current settings for the workspace service
+        /// </summary>
+        private SqlToolsSettings Settings => WorkspaceService.CurrentSettings;
 
         #endregion
 
@@ -346,13 +344,14 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
         {
             try
             {
-                // Attempt to get the connection for the editor
+                // Attempt to get a connection for query execution
                 ConnectionInfo connectionInfo;
                 if (!ConnectionService.TryFindConnection(executeParams.OwnerUri, out connectionInfo))
                 {
                     await requestContext.SendError(SR.QueryServiceQueryInvalidOwnerUri);
                     return null;
                 }
+                await connectionInfo.TryOpenConnection(ConnectionType.Query);
 
                 // Attempt to clean out any old query on the owner URI
                 Query oldQuery;
@@ -415,7 +414,7 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
             }
         }
 
-        private static void ExecuteAndCompleteQuery(QueryExecuteParams executeParams, RequestContext<QueryExecuteResult> requestContext, Query query)
+        private void ExecuteAndCompleteQuery(QueryExecuteParams executeParams, RequestContext<QueryExecuteResult> requestContext, Query query)
         {
             // Skip processing if the query is null
             if (query == null)
@@ -435,21 +434,16 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution
 
                 await requestContext.SendEvent(QueryExecuteCompleteEvent.Type, eventParams);
             };
-
-            Query.QueryAsyncErrorEventHandler errorCallback = async errorMessage =>
-            {
-                // Send back the error message
-                QueryExecuteCompleteParams eventParams = new QueryExecuteCompleteParams
-                {
-                    OwnerUri = executeParams.OwnerUri,
-                    //Message = errorMessage              
-                };
-                await requestContext.SendEvent(QueryExecuteCompleteEvent.Type, eventParams);
-            };
-
             query.QueryCompleted += callback;
             query.QueryFailed += callback;
-            query.QueryConnectionException += errorCallback;
+
+            // Setup the callback for when the db changes via a query
+            Query.QueryAsyncDbChangeEventHandler dbChangeCallback = (q, db) =>
+            {
+                ConnectionService.ChangeConnectionDatabaseContext(executeParams.OwnerUri, db);
+                return Task.FromResult(0);
+            };
+            query.QueryDbChanged += dbChangeCallback;
 
             // Setup the batch callbacks
             Batch.BatchAsyncEventHandler batchStartCallback = async b =>
