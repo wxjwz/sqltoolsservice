@@ -25,17 +25,25 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
         private readonly ConcurrentDictionary<string, ConnectionWithCancel> connectionMap =
             new ConcurrentDictionary<string, ConnectionWithCancel>();
 
+        /// <summary>
+        /// Factory used for creating the SQL connection associated with the connection info.
+        /// </summary>
+        private readonly ISqlConnectionFactory factory;
+
         #endregion
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public ConnectionInfo(ISqlConnectionFactory factory, string ownerUri, ConnectionDetails details)
+        public ConnectionInfo(ISqlConnectionFactory connectionFactory, string ownerUri, ConnectionDetails details)
         {
-            Factory = factory;
+            Validate.IsNotNull(nameof(factory), factory);
+            Validate.IsNotNullOrWhitespaceString(nameof(ownerUri), ownerUri);
+            Validate.IsNotNull(nameof(details), details);
+
+            factory = connectionFactory;
             OwnerUri = ownerUri;
             ConnectionDetails = details;
-            ConnectionId = Guid.NewGuid();
             IntellisenseMetrics = new InteractionMetrics<double>(new[] {50, 100, 200, 500, 1000, 2000});
         }
 
@@ -47,19 +55,9 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
         }
 
         /// <summary>
-        /// Unique Id, helpful to identify a connection info object
-        /// </summary>
-        public Guid ConnectionId { get; private set; }
-
-        /// <summary>
         /// URI identifying the owner/user of the connection. Could be a file, service, resource, etc.
         /// </summary>
         public string OwnerUri { get; private set; }
-
-        /// <summary>
-        /// Factory used for creating the SQL connection associated with the connection info.
-        /// </summary>
-        public ISqlConnectionFactory Factory { get; }
 
         /// <summary>
         /// Properties used for creating/opening the SQL connection.
@@ -130,7 +128,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Connection
             ConnectionWithCancel connection = connectionMap.AddOrUpdate(connectionType,
                 ct => new ConnectionWithCancel
                 {
-                    Connection = Factory.CreateSqlConnection(ConnectionDetails.GetConnectionString())
+                    Connection = factory.CreateSqlConnection(ConnectionDetails.GetConnectionString())
                 }, (ct, cancel) =>
                 {
                     // If cancellation fails (b/c it has already been cancelled), throw
