@@ -60,7 +60,6 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.DataStorage
                 {typeof(int),            (o, col) => ReadInt32(o)},
                 {typeof(long),           (o, col) => ReadInt64(o)},
                 {typeof(byte),           (o, col) => ReadByte(o)},
-                {typeof(char),           (o, col) => ReadChar(o)},
                 {typeof(bool),           (o, col) => ReadBoolean(o)},
                 {typeof(double),         (o, col) => ReadDouble(o)},
                 {typeof(float),          (o, col) => ReadSingle(o)},
@@ -69,21 +68,6 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.DataStorage
                 {typeof(DateTimeOffset), (o, col) => ReadDateTimeOffset(o)},
                 {typeof(TimeSpan),       (o, col) => ReadTimeSpan(o)},
                 {typeof(byte[]),         (o, col) => ReadBytes(o)},
-
-                {typeof(SqlString),      (o, col) => ReadString(o)},
-                {typeof(SqlInt16),       (o, col) => ReadInt16(o)},
-                {typeof(SqlInt32),       (o, col) => ReadInt32(o)},
-                {typeof(SqlInt64),       (o, col) => ReadInt64(o)},
-                {typeof(SqlByte),        (o, col) => ReadByte(o)},
-                {typeof(SqlBoolean),     (o, col) => ReadBoolean(o)},
-                {typeof(SqlDouble),      (o, col) => ReadDouble(o)},
-                {typeof(SqlSingle),      (o, col) => ReadSingle(o)},
-                {typeof(SqlDecimal),     (o, col) => ReadSqlDecimal(o)},
-                {typeof(SqlDateTime),    ReadDateTime},
-                {typeof(SqlBytes),       (o, col) => ReadBytes(o)},
-                {typeof(SqlBinary),      (o, col) => ReadBytes(o)},
-                {typeof(SqlGuid),        (o, col) => ReadGuid(o)},
-                {typeof(SqlMoney),       (o, col) => ReadMoney(o)},
             };
         }
 
@@ -122,13 +106,6 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.DataStorage
 
                     // The typename is stored in the string
                     colType = Type.GetType(sqlVariantType);
-
-                    // Workaround .NET bug, see sqlbu# 440643 and vswhidbey# 599834
-                    // TODO: Is this workaround necessary for .NET Core?
-                    if (colType == null && sqlVariantType == "System.Data.SqlTypes.SqlSingle")
-                    {
-                        colType = typeof(SqlSingle);
-                    }
                 }
                 else
                 {
@@ -283,21 +260,6 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.DataStorage
         }
 
         /// <summary>
-        /// Reads a SqlDecimal from the file at the offset provided
-        /// </summary>
-        /// <param name="offset">Offset into the file to read the SqlDecimal from</param>
-        /// <returns>A SqlDecimal</returns>
-        internal FileStreamReadResult ReadSqlDecimal(long offset)
-        {
-            return ReadCellHelper(offset, length =>
-            {
-                int[] arrInt32 = new int[(length - 3) / 4];
-                Buffer.BlockCopy(buffer, 3, arrInt32, 0, length - 3);
-                return new SqlDecimal(buffer[0], buffer[1], buffer[2] == 1, arrInt32);
-            });
-        }
-
-        /// <summary>
         /// Reads a decimal from the file at the offset provided
         /// </summary>
         /// <param name="offset">Offset into the file to read the decimal from</param>
@@ -437,22 +399,6 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.DataStorage
                 Buffer.BlockCopy(buffer, 0, output, 0, length);
                 return new SqlGuid(output);
             }, totalLength => totalLength == 1);
-        }
-
-        /// <summary>
-        /// Reads a SqlMoney type from the offset provided
-        /// into a 
-        /// </summary>
-        /// <param name="offset">Offset into the file to read the value</param>
-        /// <returns>A sql money type object</returns>
-        internal FileStreamReadResult ReadMoney(long offset)
-        {
-            return ReadCellHelper(offset, length =>
-            {
-                int[] arrInt32 = new int[length / 4];
-                Buffer.BlockCopy(buffer, 0, arrInt32, 0, length);
-                return new SqlMoney(new decimal(arrInt32));
-            });
         }
 
         /// <summary>

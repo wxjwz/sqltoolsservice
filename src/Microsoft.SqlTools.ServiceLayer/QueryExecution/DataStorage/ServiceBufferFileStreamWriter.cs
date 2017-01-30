@@ -76,35 +76,21 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.DataStorage
             // Define what methods to use to write a type to the file
             writeMethods = new Dictionary<Type, Func<object, int>>
             {
-                {typeof(string), val => WriteString((string) val)},
-                {typeof(short), val => WriteInt16((short) val)},
-                {typeof(int), val => WriteInt32((int) val)},
-                {typeof(long), val => WriteInt64((long) val)},
-                {typeof(byte), val => WriteByte((byte) val)},
-                {typeof(char), val => WriteChar((char) val)},
-                {typeof(bool), val => WriteBoolean((bool) val)},
-                {typeof(double), val => WriteDouble((double) val) },
-                {typeof(float), val => WriteSingle((float) val) },
-                {typeof(decimal), val => WriteDecimal((decimal) val) },
-                {typeof(DateTime), val => WriteDateTime((DateTime) val) },
-                {typeof(DateTimeOffset), val => WriteDateTimeOffset((DateTimeOffset) val) },
-                {typeof(TimeSpan), val => WriteTimeSpan((TimeSpan) val) },
-                {typeof(byte[]), val => WriteBytes((byte[]) val)},
-
-                {typeof(SqlString), val => WriteNullable((SqlString) val, obj => WriteString((string) obj))},
-                {typeof(SqlInt16), val => WriteNullable((SqlInt16) val, obj => WriteInt16((short) obj))},
-                {typeof(SqlInt32), val => WriteNullable((SqlInt32) val, obj => WriteInt32((int) obj))},
-                {typeof(SqlInt64), val => WriteNullable((SqlInt64) val, obj => WriteInt64((long) obj)) },
-                {typeof(SqlByte), val => WriteNullable((SqlByte) val, obj => WriteByte((byte) obj)) },
-                {typeof(SqlBoolean), val => WriteNullable((SqlBoolean) val, obj => WriteBoolean((bool) obj)) },
-                {typeof(SqlDouble), val => WriteNullable((SqlDouble) val, obj => WriteDouble((double) obj)) },
-                {typeof(SqlSingle), val => WriteNullable((SqlSingle) val, obj => WriteSingle((float) obj)) },
-                {typeof(SqlDecimal), val => WriteNullable((SqlDecimal) val, obj => WriteSqlDecimal((SqlDecimal) obj)) },
-                {typeof(SqlDateTime), val => WriteNullable((SqlDateTime) val, obj => WriteDateTime((DateTime) obj)) },
-                {typeof(SqlBytes), val => WriteNullable((SqlBytes) val, obj => WriteBytes((byte[]) obj)) },
-                {typeof(SqlBinary), val => WriteNullable((SqlBinary) val, obj => WriteBytes((byte[]) obj)) },
-                {typeof(SqlGuid), val => WriteNullable((SqlGuid) val, obj => WriteGuid((Guid) obj)) },
-                {typeof(SqlMoney), val => WriteNullable((SqlMoney) val, obj => WriteMoney((SqlMoney) obj)) }
+                {typeof(string), val => WriteString((string) val)},                             // char, nchar, varchar, nvarchar, text, sql_variant, xml
+                {typeof(short), val => WriteInt16((short) val)},                                // smallint
+                {typeof(int), val => WriteInt32((int) val)},                                    // int
+                {typeof(long), val => WriteInt64((long) val)},                                  // bigint
+                {typeof(byte), val => WriteByte((byte) val)},                                   // tinyint
+                {typeof(char), val => WriteChar((char) val)},                                   // Doesn't appear to be returned by SqlClient
+                {typeof(bool), val => WriteBoolean((bool) val)},                                // bit
+                {typeof(double), val => WriteDouble((double) val) },                            // float
+                {typeof(float), val => WriteSingle((float) val) },                              // real
+                {typeof(decimal), val => WriteDecimal((decimal) val) },                         // decimal, money, smallmoney, numeric
+                {typeof(DateTime), val => WriteDateTime((DateTime) val) },                      // smalldatetime, datetime, datetime2, date
+                {typeof(DateTimeOffset), val => WriteDateTimeOffset((DateTimeOffset) val) },    // datetimeoffset
+                {typeof(TimeSpan), val => WriteTimeSpan((TimeSpan) val) },                      // time
+                {typeof(byte[]), val => WriteBytes((byte[]) val)},                              // binary, varbinary, image, *.sys.hierarchyid, geography, geometry, timestamp
+                {typeof(Guid), val => WriteGuid((Guid) val) }                                   // uniqueidentifier
             };
         }
 
@@ -480,16 +466,6 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.DataStorage
         }
 
         /// <summary>
-        /// Stores a SqlMoney value to the file by treating it as a decimal
-        /// </summary>
-        /// <param name="val">The SqlMoney value to write to the file</param>
-        /// <returns>Number of bytes written to the file</returns>
-        internal int WriteMoney(SqlMoney val)
-        {
-            return WriteDecimal(val.Value);
-        }
-
-        /// <summary>
         /// Creates a new buffer that is of the specified length if the buffer is not already
         /// at least as long as specified.
         /// </summary>
@@ -525,19 +501,6 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.DataStorage
             intBuffer[0] = iLen;
             Buffer.BlockCopy(intBuffer, 0, byteBuffer, 1, 4);
             return FileUtils.WriteWithLength(fileStream, byteBuffer, 5);
-        }
-
-        /// <summary>
-        /// Writes a Nullable type (generally a Sql* type) to the file. The function provided by
-        /// <paramref name="valueWriteFunc"/> is used to write to the file if <paramref name="val"/>
-        /// is not null. <see cref="WriteNull"/> is used if <paramref name="val"/> is null.
-        /// </summary>
-        /// <param name="val">The value to write to the file</param>
-        /// <param name="valueWriteFunc">The function to use if val is not null</param>
-        /// <returns>Number of bytes used to write value to the file</returns>
-        private int WriteNullable(INullable val, Func<object, int> valueWriteFunc)
-        {
-            return val.IsNull ? WriteNull() : valueWriteFunc(val);
         }
 
         #endregion

@@ -204,22 +204,6 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.QueryExecution.DataStorage
         }
 
         [Fact]
-        public void SqlDecimalTest()
-        {
-            // Setup: Create some test values
-            // NOTE: We are doing these here instead of InlineData because SqlDecimal values can't be written as constant expressions
-            SqlDecimal[] testValues =
-            {
-                SqlDecimal.MaxValue, SqlDecimal.MinValue, new SqlDecimal(0x01, 0x01, true, 0, 0, 0, 0)
-            };
-            foreach (SqlDecimal value in testValues)
-            {
-                int valueLength = 4 + value.BinData.Length;
-                VerifyReadWrite(valueLength, value, (writer, val) => writer.WriteSqlDecimal(val), reader => reader.ReadSqlDecimal(0));
-            }
-        }
-
-        [Fact]
         public void Decimal()
         {
             // Setup: Create some test values
@@ -475,21 +459,6 @@ namespace Microsoft.SqlTools.ServiceLayer.Test.QueryExecution.DataStorage
             foreach (Guid guid in guids)
             {
                 VerifyReadWrite(guid.ToByteArray().Length + 1, new SqlGuid(guid), (writer, val) => writer.WriteGuid(guid), reader => reader.ReadGuid(0));
-            }
-        }
-
-        [Fact]
-        public void MoneyTest()
-        {
-            // Setup: Create some test values
-            // NOTE: We are doing these here instead of InlineData because SqlMoney can't be written as a constant expression
-            SqlMoney[] monies =
-            {
-                SqlMoney.Zero, SqlMoney.MinValue, SqlMoney.MaxValue, new SqlMoney(1.02)
-            };
-            foreach (SqlMoney money in monies)
-            {
-                VerifyReadWrite(sizeof(decimal) + 1, money, (writer, val) => writer.WriteMoney(money), reader => reader.ReadMoney(0));
             }
         }
     }

@@ -16,40 +16,42 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.Contracts
     /// </summary>
     public class DbColumnWrapper : DbColumn
     {
+        public const string XmlShowPlanColumnName = "Microsoft SQL Server 2005 XML Showplan";
+
         /// <summary>
         /// All types supported by the server, stored as a hash set to provide O(1) lookup
         /// </summary>
         internal static readonly HashSet<string> AllServerDataTypes = new HashSet<string>
         {
-            "bigint",
-            "binary",
-            "bit",
-            "char",
-            "datetime",
-            "decimal",
-            "float",
-            "image",
-            "int",
-            "money",
-            "nchar",
-            "ntext",
-            "nvarchar",
-            "real",
-            "uniqueidentifier",
-            "smalldatetime",
-            "smallint",
-            "smallmoney",
-            "text",
-            "timestamp",
-            "tinyint",
-            "varbinary",
-            "varchar",
-            "sql_variant",
-            "xml",
-            "date",
-            "time",
-            "datetimeoffset",
-            "datetime2"
+            "bigint",               // long
+            "binary",               // byte[]
+            "bit",                  // boolean
+            "char",                 // string
+            "datetime",             // DateTime
+            "decimal",              // Decimal
+            "float",                // double
+            "image",                // byte[]
+            "int",                  // int
+            "money",                // Decimal
+            "nchar",                // string
+            "ntext",                // string
+            "nvarchar",             // string
+            "real",                 // float
+            "uniqueidentifier",     // Guid
+            "smalldatetime",        // DateTime
+            "smallint",             // short
+            "smallmoney",           // Decimal
+            "text",                 // string
+            "timestamp",            // byte[]
+            "tinyint",              // byte
+            "varbinary",            // byte[]
+            "varchar",              // string
+            "sql_variant",          // string ???
+            "xml",                  // string
+            "date",                 // DateTime
+            "time",                 // TimeSpan
+            "datetimeoffset",       // DateTimeOffset
+            "datetime2"             // DateTime
         };
 
         /// <summary>
@@ -103,8 +105,7 @@ namespace Microsoft.SqlTools.ServiceLayer.QueryExecution.Contracts
                         //This is not the best fix that we could do but we are trying to minimize code impact
                         //at this point. Post Yukon we should review this code again and avoid
                         //hard-coding special column name in multiple places.
-                        const string yukonXmlShowPlanColumn = "Microsoft SQL Server 2005 XML Showplan";
-                        if (column.ColumnName == yukonXmlShowPlanColumn)
+                        if (column.ColumnName == XmlShowPlanColumnName)
                         {
                             // Indicate that this is xml to apply the right size limit
                             // Note we leave chars type as well to use the right retrieval mechanism.
