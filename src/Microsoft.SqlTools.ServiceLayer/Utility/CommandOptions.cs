@@ -32,7 +32,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Utility
                         arg = arg.Substring(1).ToLowerInvariant();
                         string argName = arg;
                         string argProperty = "";
-                        int splitIndex = arg.IndexOf(' ');
+                        int splitIndex = arg.IndexOf('=');
                         if (splitIndex > 0)
                         {
                             argName = arg.Substring(0, splitIndex);
