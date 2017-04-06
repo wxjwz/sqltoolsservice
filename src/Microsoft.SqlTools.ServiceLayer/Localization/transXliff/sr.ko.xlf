@@ -1,495 +1,489 @@
 <?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" original="sr.resx" source-language="en" target-language="es">
+  <file datatype="xml" original="sr.resx" source-language="en" target-language="ko">
     <body>
       <trans-unit id="ConnectionServiceConnectErrorNullParams">
         <source>Connection parameters cannot be null</source>
-        <target state="new">Los parámetros de conexión no pueden ser nulos</target>
+        <target state="new">연결 매개 변수는 null 일 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionServiceListDbErrorNullOwnerUri">
         <source>OwnerUri cannot be null or empty</source>
-        <target state="new">OwnerUri no puede ser nulo ni estar vacío</target>
+        <target state="new">OwnerUri은 null 이거나 비어 있을 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionServiceListDbErrorNotConnected">
         <source>SpecifiedUri '{0}' does not have existing connection</source>
-        <target state="new">SpecifiedUri '{0}' no tiene una conexión existente</target>
+        <target state="new">SpecifiedUrl '{0}'는 기존 연결이 없습니다.</target>
         
         <note>.
  Parameters: 0 - uri (string) </note>
       </trans-unit>
       <trans-unit id="ConnectionServiceConnStringInvalidAuthType">
         <source>Invalid value '{0}' for AuthenticationType.  Valid values are 'Integrated' and 'SqlLogin'.</source>
-        <target state="new">El valor '{0}' no es válido para AuthenticationType. Los valores válidos son 'Integrated' y 'SqlLogin'.</target>
+        <target state="new">AuthenticationType  값으로 ' {0} '이 (가) 잘못 되었습니다. 유효한 값은 'Integrated'나 'SqlLogin' 입니다.</target>
         
         <note>.
  Parameters: 0 - authType (string) </note>
       </trans-unit>
       <trans-unit id="ConnectionServiceConnStringInvalidIntent">
         <source>Invalid value '{0}' for ApplicationIntent. Valid values are 'ReadWrite' and 'ReadOnly'.</source>
-        <target state="new">El valor '{0}' no es válido para ApplicationIntent. Los valores válidos son 'ReadWrite' y 'ReadOnly'.</target>
+        <target state="new">ApplicationIntent 값으로 ' {0} '이 (가) 잘못 되었습니다. 유효한 값은 'ReadWrite'나 'ReadOnly' 입니다.</target>
         
         <note>.
  Parameters: 0 - intent (string) </note>
       </trans-unit>
       <trans-unit id="ConnectionServiceConnectionCanceled">
         <source>Connection canceled</source>
-        <target state="new">Conexión cancelada</target>
+        <target state="new">연결이 취소되었습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionParamsValidateNullOwnerUri">
         <source>OwnerUri cannot be null or empty</source>
-        <target state="new">OwnerUri no puede ser nulo ni estar vacío</target>
+        <target state="new">OwnerUri는 null 이나 빈값일 수 없습니다</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionParamsValidateNullConnection">
         <source>Connection details object cannot be null</source>
-        <target state="new">El objeto de detalles de conexión no puede ser nulo</target>
+        <target state="new">연결 세부 정보 개체는 null이 될 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionParamsValidateNullServerName">
         <source>ServerName cannot be null or empty</source>
-        <target state="new">ServerName no puede ser nulo ni estar vacío</target>
+        <target state="new">서버 이름은 null이거나 비어 있을 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionParamsValidateNullSqlAuth">
         <source>{0} cannot be null or empty when using SqlLogin authentication</source>
-        <target state="new">{0} no puede ser nulo ni estar vacío cuando se utiliza autenticación SqlLogin</target>
+        <target state="new">SqlLogin 인증 사용 시 {0}은(는) null이나 빈값일 수 없습니다.</target>
         
         <note>.
  Parameters: 0 - component (string) </note>
       </trans-unit>
       <trans-unit id="QueryServiceCancelAlreadyCompleted">
         <source>The query has already completed, it cannot be cancelled</source>
-        <target state="new">Ya se ha completado la consulta, no se puede cancelar</target>
+        <target state="new">쿼리가 이미 완료되어 취소할 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceCancelDisposeFailed">
         <source>Query successfully cancelled, failed to dispose query. Owner URI not found.</source>
-        <target state="new">La consulta fue cancelada con éxito, pero no se ha podido desechar.  No se encontró el URI del propietario.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceQueryCancelled">
         <source>Query was canceled by user</source>
-        <target state="new">Consulta cancelada por el usuario</target>
+        <target state="new">사용자가 쿼리를 취소 했습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSubsetBatchNotCompleted">
         <source>The batch has not completed, yet</source>
-        <target state="new">El lote aún no ha finalizado,</target>
+        <target state="new">일괄 처리가 아직 완료되지 않았습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSubsetBatchOutOfRange">
         <source>Batch index cannot be less than 0 or greater than the number of batches</source>
-        <target state="new">Índice de lote no puede ser menor que 0 o mayor que el número de lotes</target>
+        <target state="new">일괄 처리 인덱스는 0 미만 이거나 일괄 처리 갯수 보다 클 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSubsetResultSetOutOfRange">
         <source>Result set index cannot be less than 0 or greater than the number of result sets</source>
-        <target state="new">Índice del conjunto de resultados no puede ser menor que 0 o mayor que el número de conjuntos de resultados</target>
+        <target state="new">결과 집합 인덱스는 0 미만 이거나 결과 집합의 갯수보다 클 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceDataReaderByteCountInvalid">
         <source>Maximum number of bytes to return must be greater than zero</source>
-        <target state="new">El número máximo de bytes a devolver debe ser mayor que cero</target>
+        <target state="new">반환되는 최대 바이트 수는 0보다 커야 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceDataReaderCharCountInvalid">
         <source>Maximum number of chars to return must be greater than zero</source>
-        <target state="new">El número máximo de caracteres a devolver debe ser mayor que cero</target>
+        <target state="new">반환되는 최대 문자 수는 0보다 커야 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceDataReaderXmlCountInvalid">
         <source>Maximum number of XML bytes to return must be greater than zero</source>
-        <target state="new">El número máximo de bytes XML a devolver debe ser mayor que cero</target>
+        <target state="new">반환되는 최대 XML 바이트 수는 0보다 커야 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceFileWrapperWriteOnly">
         <source>Access method cannot be write-only</source>
-        <target state="new">El método de acceso no puede ser de sólo escritura</target>
+        <target state="new">Access 방법은 쓰기 전용이 될 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceFileWrapperNotInitialized">
         <source>FileStreamWrapper must be initialized before performing operations</source>
-        <target state="new">FileStreamWrapper debe inicializarse antes de realizar operaciones</target>
+        <target state="new">FileStreamWrapper 는 작업을 수행 하기 전에 초기화 해야 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceFileWrapperReadOnly">
         <source>This FileStreamWrapper cannot be used for writing</source>
-        <target state="new">Este FileStreamWrapper no se puede utilizar para escritura.</target>
+        <target state="new">FileStreamWrapper 는 쓰기용으로 사용할 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceAffectedOneRow">
         <source>(1 row affected)</source>
-        <target state="new">(1 fila afectada)</target>
+        <target state="new">(1 개 행이 영향을 받음)</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceAffectedRows">
         <source>({0} rows affected)</source>
-        <target state="new">({0} filas afectadas)</target>
+        <target state="new">({0} 개 행이 영향을 받음)</target>
         
         <note>.
  Parameters: 0 - rows (long) </note>
       </trans-unit>
       <trans-unit id="QueryServiceCompletedSuccessfully">
         <source>Commands completed successfully.</source>
-        <target state="new">Comandos finalizados correctamente.</target>
+        <target state="new">명령이 성공적으로 완료 되었습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceErrorFormat">
         <source>Msg {0}, Level {1}, State {2}, Line {3}{4}{5}</source>
-        <target state="new">Msg {0}, nivel {1} estado {2}, línea {3} {4} {5}</target>
+        <target state="new">메시지 {0}, 수준 {1}, 상태 {2}, 줄 {3} {4} {5}.</target>
         
         <note>.
  Parameters: 0 - msg (int), 1 - lvl (int), 2 - state (int), 3 - line (int), 4 - newLine (string), 5 - message (string) </note>
       </trans-unit>
       <trans-unit id="QueryServiceQueryFailed">
         <source>Query failed: {0}</source>
-        <target state="new">Error en la consulta: {0}</target>
+        <target state="new">쿼리 실패: {0}</target>
         
         <note>.
  Parameters: 0 - message (string) </note>
       </trans-unit>
       <trans-unit id="QueryServiceColumnNull">
         <source>(No column name)</source>
-        <target state="new">(Ningún nombre de columna)</target>
+        <target state="new">(열 이름 없음)</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceRequestsNoQuery">
         <source>The requested query does not exist</source>
-        <target state="new">La consulta solicitada no existe</target>
+        <target state="new">요청한 쿼리가 존재하지 않습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceQueryInvalidOwnerUri">
         <source>This editor is not connected to a database</source>
-        <target state="new">Este editor no está conectado a una base de datos</target>
+        <target state="new">편집기가 데이터베이스에 연결되지 않았습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceQueryInProgress">
         <source>A query is already in progress for this editor session. Please cancel this query or wait for its completion.</source>
-        <target state="new">Una consulta ya está en curso para esta sesión de editor. Por favor, cancelar esta consulta o esperar su finalización.</target>
+        <target state="new">쿼리가 현재 편집기 세션에서 이미 실행 중입니다. 쿼리를 취소하거나 완료 될 때까지 대기 하십시오.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceMessageSenderNotSql">
         <source>Sender for OnInfoMessage event must be a SqlConnection</source>
-        <target state="new">Remitente de eventos de OnInfoMessage debe ser un objeto SqlConnection</target>
+        <target state="new">OnInfoMessage 이벤트 발신자는 SqlConnection 이어야 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSaveAsResultSetNotComplete">
         <source>Result cannot be saved until query execution has completed</source>
-        <target state="new">No se puede guardar el resultado hasta que haya finalizado la ejecución de la consulta</target>
+        <target state="new">결과는 쿼리 실행이 완료 될 때까지 저장할 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSaveAsMiscStartingError">
         <source>Internal error occurred while starting save task</source>
-        <target state="new">Error interno al iniciar el guardado de la tarea</target>
+        <target state="new">저장 작업을 시작 하는 동안 내부 오류가 발생 했습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSaveAsInProgress">
         <source>A save request to the same path is in progress</source>
-        <target state="new">Una operacion de guardado en la misma ruta se encuentra en curso</target>
+        <target state="new">동일한 경로로 저장 요청이 진행 중입니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSaveAsFail">
         <source>Failed to save {0}: {1}</source>
-        <target state="new">Error al guardar {0}: {1}</target>
+        <target state="new">저장 실패 {0}:{1}</target>
         
         <note>.
  Parameters: 0 - fileName (string), 1 - message (string) </note>
       </trans-unit>
       <trans-unit id="QueryServiceResultSetNotRead">
         <source>Cannot read subset unless the results have been read from the server</source>
-        <target state="new">No se puede leer el subconjunto, a menos que los resultados se han leído desde el servidor</target>
+        <target state="new">서버로부터 결과를 모두 읽기 전에는 일부 결과를 읽을 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceResultSetStartRowOutOfRange">
         <source>Start row cannot be less than 0 or greater than the number of rows in the result set</source>
-        <target state="new">Fila de inicio no puede ser menor que 0 o mayor que el número de filas en el conjunto de resultados</target>
+        <target state="new">시작 행은 0 미만이거나 결과 집합의 행의 갯수보다 클 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceResultSetRowCountOutOfRange">
         <source>Row count must be a positive integer</source>
-        <target state="new">La cantidad de filas debe ser un entero positivo</target>
+        <target state="new">행 수는 양수여야 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceResultSetNoColumnSchema">
         <source>Could not retrieve column schema for result set</source>
-        <target state="new">No se pudo recuperar el esquema de columna para el conjunto de resultados</target>
+        <target state="new">결과 집합의 열 스키마를 검색할 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceExecutionPlanNotFound">
         <source>Could not retrieve an execution plan from the result set </source>
-        <target state="new">No se pudo recuperar un plan de ejecución del conjunto de resultados</target>
+        <target state="new">결과 집합에서 실행 계획을 검색할 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionAzureError">
         <source>This feature is currently not supported on Azure SQL DB and Data Warehouse: {0}</source>
-        <target state="new">Esta característica actualmente no se admite en la base de datos de SQL Azure y almacén de datos: {0}</target>
+        <target state="new">현재 이 기능은 Azure SQL DB와 데이터 웨어하우스에서 지원 되지 않습니다: {0}</target>
         
         <note>.
  Parameters: 0 - errorMessage (string) </note>
       </trans-unit>
       <trans-unit id="PeekDefinitionError">
         <source>An unexpected error occurred during Peek Definition execution: {0}</source>
-        <target state="new">Se ha producido un error inesperado durante la ejecución de la definición de Peek: {0}</target>
+        <target state="new">정의 피킹을 실행하는 동안 예상치 못한 오류가 발생했습니다: {0}</target>
         
         <note>.
  Parameters: 0 - errorMessage (string) </note>
       </trans-unit>
       <trans-unit id="PeekDefinitionNoResultsError">
         <source>No results were found.</source>
-        <target state="new">No se encontraron resultados.</target>
+        <target state="new">결과가 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionDatabaseError">
         <source>No database object was retrieved.</source>
-        <target state="new">No se pudo obtener ningún objeto asociado a la base de datos.</target>
+        <target state="new">검색된 데이터베이스 개체가 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionNotConnectedError">
         <source>Please connect to a server.</source>
-        <target state="new">Por favor, conéctese a un servidor</target>
+        <target state="new">서버에 연결 하십시오.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionTimedoutError">
         <source>Operation timed out.</source>
-        <target state="new">Tiempo de espera agotado para esta operación.</target>
+        <target state="new">작업 제한 시간이 초과 되었습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionTypeNotSupportedError">
         <source>This object type is currently not supported by this feature.</source>
-        <target state="new">Esta característica no admite actualmente este tipo de objeto.</target>
+        <target state="new">현재 이 개체 형식은 지원되지 않습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="WorkspaceServicePositionLineOutOfRange">
         <source>Position is outside of file line range</source>
-        <target state="new">Posición está fuera del intervalo de la línea de archivo</target>
+        <target state="new">위치가 파일 줄 범위를 벗어났습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="WorkspaceServicePositionColumnOutOfRange">
         <source>Position is outside of column range for line {0}</source>
-        <target state="new">Posición está fuera del intervalo de la columna de la línea {0}</target>
+        <target state="new">위치가 줄 {0} 의 열 범위를 벗어났습니다.</target>
         
         <note>.
  Parameters: 0 - line (int) </note>
       </trans-unit>
       <trans-unit id="WorkspaceServiceBufferPositionOutOfOrder">
         <source>Start position ({0}, {1}) must come before or be equal to the end position ({2}, {3})</source>
-        <target state="new">Posición de inicio ({0}, {1}) debe preceder o ser igual a la posición final ({2}, {3})</target>
+        <target state="new">시작 위치 ({0}, {1})은(는) 반드시 끝 위치 ({2}, {3}) 과 같거나 이전이어야 합니다.</target>
         
         <note>.
  Parameters: 0 - sLine (int), 1 - sCol (int), 2 - eLine (int), 3 - eCol (int) </note>
       </trans-unit>
       <trans-unit id="EE_BatchSqlMessageNoProcedureInfo">
         <source>Msg {0}, Level {1}, State {2}, Line {3}</source>
-        <target state="new">Msg {0}, {1}, nivel de estado {2}, línea {3}</target>
+        <target state="new">메시지 {0}, 수준{1}, 상태 {2}, 줄 {3}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchSqlMessageWithProcedureInfo">
         <source>Msg {0}, Level {1}, State {2}, Procedure {3}, Line {4}</source>
-        <target state="new">Msj {0}, {1}, nivel de estado {2}, procedimiento {3}, línea {4}</target>
+        <target state="new">메시지 {0}, 수준 {1}, 상태 {2}, 프로시저 {3}, 줄 {4}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchSqlMessageNoLineInfo">
         <source>Msg {0}, Level {1}, State {2}</source>
-        <target state="new">Msg {0}, nivel {1}, {2} de estado</target>
+        <target state="new">메시지 {0}, 수준 {1}, 상태 {2}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchError_Exception">
         <source>An error occurred while the batch was being processed. The error message is: {0}</source>
-        <target state="new">Se produjo un error al procesar el lote. Mensaje de error: {0}</target>
+        <target state="new">일괄 처리를 처리 하는 동안 하는 동안 오류가 발생 합니다. 오류 메시지: {0}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchExecutionInfo_RowsAffected">
         <source>({0} row(s) affected)</source>
-        <target state="new">({0} filas afectadas)</target>
+        <target state="new">({0} 개 행이 영향을 받음)</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionNotYetCompleteError">
         <source>The previous execution is not yet complete.</source>
-        <target state="new">La ejecución anterior aún no está completa.</target>
+        <target state="new">이전 실행이 아직 완료 되지 않았습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ScriptError_Error">
         <source>A scripting error occurred.</source>
-        <target state="new">Se ha producido un error de secuencias de comandos.</target>
+        <target state="new">스크립팅 오류가 발생 했습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ScriptError_ParsingSyntax">
         <source>Incorrect syntax was encountered while {0} was being parsed.</source>
-        <target state="new">Se encontró sintaxis incorrecta mientras se estaba analizando {0}.</target>
+        <target state="new">{0}에 잘못된 구문이 발견되었습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ScriptError_FatalError">
         <source>A fatal error occurred.</source>
-        <target state="new">Se ha producido un error grave.</target>
+        <target state="new">치명적인 오류가 발생 했습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionInfo_FinalizingLoop">
         <source>Execution completed {0} times...</source>
-        <target state="new">La ejecución completó {0} veces...</target>
+        <target state="new">실행 완료 {0} 회</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionInfo_QueryCancelledbyUser">
         <source>You cancelled the query.</source>
-        <target state="new">Se canceló la consulta.</target>
+        <target state="new">쿼리를 취소 했습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchExecutionError_Halting">
         <source>An error occurred while the batch was being executed.</source>
-        <target state="new">Se produjo un error mientras se ejecutaba el lote.</target>
+        <target state="new">일괄 처리를 실행 하는 동안 오류가 발생 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchExecutionError_Ignoring">
         <source>An error occurred while the batch was being executed, but the error has been ignored.</source>
-        <target state="new">Se produjo un error mientras se ejecutaba el lote, pero se ha omitido el error.</target>
+        <target state="new">일괄 처리를 실행 하는 동안 오류가 발생했으나 그 오류는 무시되었습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionInfo_InitilizingLoop">
         <source>Starting execution loop of {0} times...</source>
-        <target state="new">Iniciando bucle de ejecución de {0} veces...</target>
+        <target state="new">{0} 번 루프 실행을 시작 하는 중...</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionError_CommandNotSupported">
         <source>Command {0} is not supported.</source>
-        <target state="new">No se admite el comando {0}.</target>
+        <target state="new">{0} 명령은 지원되지 않습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionError_VariableNotFound">
         <source>The variable {0} could not be found.</source>
-        <target state="new">La variable {0} no se encontró.</target>
+        <target state="new">{0} 변수를 찾을 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineError">
         <source>SQL Execution error: {0}</source>
-        <target state="new">Error de ejecución de SQL: {0}</target>
+        <target state="new">SQL 실행 오류: {0}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionError">
         <source>Batch parser wrapper execution: {0} found... at line {1}: {2}    Description: {3}</source>
-        <target state="new">Ejecución de contenedor del analizador por lotes: {0} se encuentra... en la línea {1}: {2} Descripción: {3}</target>
+        <target state="new">일괄처리 구문분석 래퍼 실행: {0} 발견... 줄 {1}: {2} 설명: {3}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineBatchMessage">
         <source>Batch parser wrapper execution engine batch message received:  Message: {0}    Detailed message: {1}</source>
-        <target state="new">Lote analizador contenedor ejecución motor lote mensaje recibido: mensaje: {0} mensaje detallado: {1}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineBatchResultSetProcessing">
         <source>Batch parser wrapper execution engine batch ResultSet processing: DataReader.FieldCount: {0}  DataReader.RecordsAffected: {1}</source>
-        <target state="new">Motor de ejecución de analizador contenedor lote ResultSet procesamiento por lotes: DataReader.FieldCount: {0} DataReader.RecordsAffected: {1}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineBatchResultSetFinished">
         <source>Batch parser wrapper execution engine batch ResultSet finished.</source>
-        <target state="new">Finalizó el elemento ResultSet analizador contenedor ejecución motor los lotes.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineBatchCancelling">
         <source>Canceling batch parser wrapper batch execution.</source>
-        <target state="new">Cancelando la ejecución por lotes del contenedor del analizador por lotes.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ScriptError_Warning">
         <source>Scripting warning.</source>
-        <target state="new">Advertencia de scripting.</target>
+        <target state="new">스크립팅 경고.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="TroubleshootingAssistanceMessage">
         <source>For more information about this error, see the troubleshooting topics in the product documentation.</source>
-        <target state="new">Para obtener más información acerca de este error, vea los temas de solución de problemas en la documentación del producto.</target>
+        <target state="new">이 오류에 대한 추가 정보는 제품 설명서의 문제 해결 항목을 참조하십시오.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_CircularReference">
         <source>File '{0}' recursively included.</source>
-        <target state="new">El archivo '{0}' se incluyó recursivamente.</target>
+        <target state="new">' {0} '이 (가) 재귀적으로 포함 된 파일입니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_CommentNotTerminated">
         <source>Missing end comment mark '*/'.</source>
-        <target state="new">Falta la marca de final de comentario ' * /'.</target>
+        <target state="new">주석 끝 표시 ' * /' 누락 .</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_StringNotTerminated">
         <source>Unclosed quotation mark after the character string.</source>
-        <target state="new">Sin comilla de cierre después de la cadena de caracteres.</target>
+        <target state="new">문자열에 닫히지 않은 인용 부호.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_IncorrectSyntax">
         <source>Incorrect syntax was encountered while parsing '{0}'.</source>
-        <target state="new">Se encontró sintaxis incorrecta al analizar '{0}'.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_VariableNotDefined">
         <source>Variable {0} is not defined.</source>
-        <target state="new">La variable {0} no está definida.</target>
+        <target state="new">{0} 변수가 정의되지 않았습니다.</target>
         
         <note/>
       </trans-unit>
@@ -501,129 +495,126 @@
       </trans-unit>
       <trans-unit id="ErrorEmptyStringReplacement">
         <source>Replacement of an empty string by an empty string.</source>
-        <target state="new">Sustitución de una cadena vacía por una cadena vacía.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionNotFound">
         <source>Edit session does not exist.</source>
-        <target state="new">Sesión de edición no existe,</target>
+        <target state="new">편집 세션이 존재하지 않습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataQueryNotCompleted">
         <source>Query has not completed execution</source>
-        <target state="new">La consulta no ha finalizado.</target>
+        <target state="new">쿼리 실행이 완료되지 않았습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataQueryImproperResultSets">
         <source>Query did not generate exactly one result set</source>
-        <target state="new">La consulta no generó un único set de resultados</target>
+        <target state="new">쿼리가 정확히 하나의 결과 집합을 생성하지 않았습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataFailedAddRow">
         <source>Failed to add new row to update cache</source>
-        <target state="new">Falló al agregar una nueva fila a la caché de actualización</target>
+        <target state="new">업데이트 캐시에 새로운 행 추가를 실패했습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataRowOutOfRange">
         <source>Given row ID is outside the range of rows in the edit cache</source>
-        <target state="new">El ID de la fila ingresado, se encuentra fuera del rango de filas de la caché de edición</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataUpdatePending">
         <source>An update is already pending for this row and must be reverted first</source>
-        <target state="new">Una actualización está pendiente para esta fila y debe de revertirse primero</target>
+        <target state="new">이 행에 대한 업데이트가 이미 보류 중이므로 먼저 되돌려야 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataUpdateNotPending">
         <source>Given row ID does not have pending update</source>
-        <target state="new">El ID de la fila ingresado no tiene actualizaciones pendientes</target>
+        <target state="new">주어진 row ID에 보류 중인 업데이트가 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataObjectMetadataNotFound">
         <source>Table or view metadata could not be found</source>
-        <target state="new">La metadata de la tabla o vista no pudo ser encontrada</target>
+        <target state="new">테이블이나 뷰 메타 데이터를 찾을 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataInvalidFormatBinary">
         <source>Invalid format for binary column</source>
-        <target state="new">Formato inválido para columna binaria</target>
+        <target state="new">이진 열에 형식이 잘못되었습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataInvalidFormatBoolean">
         <source>Allowed values for boolean columns are 0, 1, &quot;true&quot;, or &quot;false&quot;</source>
-        <target state="new">Columnas del tipo boolean deben de ser numéricos 1 o 0, o tipo string true o false</target>
+        <target state="new">Boolean 열은 반드시 숫자 1이나 0 혹은 문자 true나 false여야 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataCreateScriptMissingValue">
         <source>A required cell value is missing</source>
-        <target state="new">Falta un valor requerido de la celda</target>
+        <target state="new">필수 셀 값이 누락되었습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataDeleteSetCell">
         <source>A delete is pending for this row, a cell update cannot be applied.</source>
-        <target state="new">Existe una eliminación pendiente para esta fila, una actualización de celda no puede ser realizada.</target>
+        <target state="new">행 삭제가 보류 중이므로, 셀을 업데이트할 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataColumnIdOutOfRange">
         <source>Column ID must be in the range of columns for the query</source>
-        <target state="new">El ID de la columna debe de estar en el rango de columnas de la consulta.</target>
+        <target state="new">열 ID는 쿼리의 열 범위 내에 있어야 합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataColumnCannotBeEdited">
         <source>Column cannot be edited</source>
-        <target state="new">La columna no puede ser editada</target>
+        <target state="new">열을 편집할 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataColumnNoKeyColumns">
         <source>No key columns were found</source>
-        <target state="new">No se encontró ninguna columna clave</target>
+        <target state="new">키 열이 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataScriptFilePathNull">
         <source>An output filename must be provided</source>
-        <target state="new">Proporcione un nombre de archivo de salida</target>
+        <target state="new">출력 파일명이 필요합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataUnsupportedObjectType">
         <source>Database object {0} cannot be used for editing.</source>
-        <target state="new">Objeto de base de datos {0} no puede ser usado para modificación.</target>
+        <target state="new">데이터베이스 개체 {0} 는 편집할 수 없습니다.</target>
         
         <note>.
  Parameters: 0 - typeName (string) </note>
       </trans-unit>
       <trans-unit id="ConnectionServiceDbErrorDefaultNotConnected">
         <source>Specified URI '{0}' does not have a default connection</source>
-        <target state="new">SpecifiedUri '{0}' no tiene alguna conexión por defecto</target>
+        <target state="new">지정된 Uri ' {0} '에 기본 연결이 지정되지 않았습니다.</target>
         
         <note>.
  Parameters: 0 - uri (string) </note>
       </trans-unit>
       <trans-unit id="EditDataCommitInProgress">
         <source>A commit task is in progress. Please wait for completion.</source>
-        <target state="new">Una tarea de confirmación se encuentra en progreso. Por favor espere que la operación termine.</target>
+        <target state="new">커밋 작업이 진행 중입니다. 완료될 때까지 기다리세요.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="SqlScriptFormatterDecimalMissingPrecision">
         <source>Decimal column is missing numeric precision or numeric scale</source>
-        <target state="new">Columna del tipo decimal no tiene precisión o escala numérica</target>
         
         <note/>
       </trans-unit>
@@ -635,49 +626,46 @@
       </trans-unit>
       <trans-unit id="QueryServiceResultSetAddNoRows">
         <source>Cannot add row to result buffer, data reader does not contain rows</source>
-        <target state="new">No se pueden agregar filas al buffer de resultados, el lector de datos no contiene filas</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataTimeOver24Hrs">
         <source>TIME column values must be between 00:00:00.0000000 and 23:59:59.9999999</source>
-        <target state="new">Los valores en la columna TIME deben estar incluidos en el rango desde 00:00:00:000000 hasta 23:59:59.999999</target>
+        <target state="new">TIME 열의 값은 00:00:00.0000000과 23:59:59.9999999 사이의 값만 허용됩니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataNullNotAllowed">
         <source>NULL is not allowed for this column</source>
-        <target state="new">No se permite un valor NULL en esta columna</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionAlreadyExists">
         <source>Edit session already exists.</source>
-        <target state="new">La sesión de edición ya existe.</target>
+        <target state="new">편집 세션이 이미 존재합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionNotInitialized">
         <source>Edit session has not been initialized</source>
-        <target state="new">La sesión de edición no se inicializó</target>
+        <target state="new">편집 세션이 초기화 되지 않았습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionAlreadyInitialized">
         <source>Edit session has already been initialized</source>
-        <target state="new">La sesión de edición ya se inicializó</target>
+        <target state="new">편집 세션이 이미 초기화 되었습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionAlreadyInitializing">
         <source>Edit session has already been initialized or is in the process of initializing</source>
-        <target state="new">La sesión de edición ya se inicializo o se encuentra en proceso de inicialización</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataQueryFailed">
         <source>Query execution failed, see messages for details</source>
-        <target state="new">La ejecución de la consulta falló, ver los mensajes para obtener mas detalle</target>
+        <target state="new">쿼리 실행에 실패했습니다. 자세한 정보는 메시지를 참조하세요.</target>
         
         <note/>
       </trans-unit>
@@ -688,29 +676,31 @@
       </trans-unit>
       <trans-unit id="QueryServiceCellNull">
         <source>NULL</source>
+        <target state="new">NULL</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataMetadataObjectNameRequired">
         <source>A object name must be provided</source>
-        <target state="new">Se debe proveer un nombre de objeto</target>
+        <target state="new">개체 이름이 필요합니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataMetadataTooManyIdentifiers">
         <source>Explicitly specifying server or database is not supported</source>
+        <target state="new">서버와 데이터베이스를 명시적으로 지정할 수 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataMetadataNotExtended">
         <source>Table metadata does not have extended properties</source>
-        <target state="new">Los metadatos de la tabla no tienen propiedades extendidas</target>
+        <target state="new">테이블 메타데이터에 확장 속성이 없습니다.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataObjectNotFound">
         <source>Table or view requested for edit could not be found</source>
-        <target state="new">La tabla o vista solicitada para edición no se encuentra</target>
+        <target state="new">편집하려는 테이블이나 뷰를 찾을 수 없습니다</target>
         
         <note/>
       </trans-unit>

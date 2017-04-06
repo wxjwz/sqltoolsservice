@@ -1,495 +1,488 @@
 <?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" original="sr.resx" source-language="en" target-language="es">
+  <file datatype="xml" original="sr.resx" source-language="en" target-language="zh-Hant">
     <body>
       <trans-unit id="ConnectionServiceConnectErrorNullParams">
         <source>Connection parameters cannot be null</source>
-        <target state="new">Los parámetros de conexión no pueden ser nulos</target>
+        <target state="new">連接參數不可為 null</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionServiceListDbErrorNullOwnerUri">
         <source>OwnerUri cannot be null or empty</source>
-        <target state="new">OwnerUri no puede ser nulo ni estar vacío</target>
+        <target state="new">OwnerUri 不能為 null 或空白</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionServiceListDbErrorNotConnected">
         <source>SpecifiedUri '{0}' does not have existing connection</source>
-        <target state="new">SpecifiedUri '{0}' no tiene una conexión existente</target>
+        <target state="new">SpecifiedUri '{0}' 沒有現有的連線</target>
         
         <note>.
  Parameters: 0 - uri (string) </note>
       </trans-unit>
       <trans-unit id="ConnectionServiceConnStringInvalidAuthType">
         <source>Invalid value '{0}' for AuthenticationType.  Valid values are 'Integrated' and 'SqlLogin'.</source>
-        <target state="new">El valor '{0}' no es válido para AuthenticationType. Los valores válidos son 'Integrated' y 'SqlLogin'.</target>
+        <target state="new">AuthenticationType 值 &quot;{0}&quot; 無效。 有效值為 'Integrated' 和 'SqlLogin'。</target>
         
         <note>.
  Parameters: 0 - authType (string) </note>
       </trans-unit>
       <trans-unit id="ConnectionServiceConnStringInvalidIntent">
         <source>Invalid value '{0}' for ApplicationIntent. Valid values are 'ReadWrite' and 'ReadOnly'.</source>
-        <target state="new">El valor '{0}' no es válido para ApplicationIntent. Los valores válidos son 'ReadWrite' y 'ReadOnly'.</target>
+        <target state="new">'{0}' 為無效的ApplicationIntent值。 有效值為 'ReadWrite' 和 'ReadOnly'。</target>
         
         <note>.
  Parameters: 0 - intent (string) </note>
       </trans-unit>
       <trans-unit id="ConnectionServiceConnectionCanceled">
         <source>Connection canceled</source>
-        <target state="new">Conexión cancelada</target>
+        <target state="new">已取消連線</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionParamsValidateNullOwnerUri">
         <source>OwnerUri cannot be null or empty</source>
-        <target state="new">OwnerUri no puede ser nulo ni estar vacío</target>
+        <target state="new">OwnerUri 不能是 null 或空白</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionParamsValidateNullConnection">
         <source>Connection details object cannot be null</source>
-        <target state="new">El objeto de detalles de conexión no puede ser nulo</target>
+        <target state="new">連線詳細資料物件不能是 null</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionParamsValidateNullServerName">
         <source>ServerName cannot be null or empty</source>
-        <target state="new">ServerName no puede ser nulo ni estar vacío</target>
+        <target state="new">ServerName 不能是 null 或空白</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="ConnectionParamsValidateNullSqlAuth">
         <source>{0} cannot be null or empty when using SqlLogin authentication</source>
-        <target state="new">{0} no puede ser nulo ni estar vacío cuando se utiliza autenticación SqlLogin</target>
         
         <note>.
  Parameters: 0 - component (string) </note>
       </trans-unit>
       <trans-unit id="QueryServiceCancelAlreadyCompleted">
         <source>The query has already completed, it cannot be cancelled</source>
-        <target state="new">Ya se ha completado la consulta, no se puede cancelar</target>
+        <target state="new">查詢已完成，無法取消</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceCancelDisposeFailed">
         <source>Query successfully cancelled, failed to dispose query. Owner URI not found.</source>
-        <target state="new">La consulta fue cancelada con éxito, pero no se ha podido desechar.  No se encontró el URI del propietario.</target>
+        <target state="new">成功地取消查詢，無法處置查詢。找不到擁有者 URI 。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceQueryCancelled">
         <source>Query was canceled by user</source>
-        <target state="new">Consulta cancelada por el usuario</target>
+        <target state="new">使用者已取消查詢</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSubsetBatchNotCompleted">
         <source>The batch has not completed, yet</source>
-        <target state="new">El lote aún no ha finalizado,</target>
+        <target state="new">批次尚未完成</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSubsetBatchOutOfRange">
         <source>Batch index cannot be less than 0 or greater than the number of batches</source>
-        <target state="new">Índice de lote no puede ser menor que 0 o mayor que el número de lotes</target>
+        <target state="new">批次索引不能小於 0 或大於批次的總數</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSubsetResultSetOutOfRange">
         <source>Result set index cannot be less than 0 or greater than the number of result sets</source>
-        <target state="new">Índice del conjunto de resultados no puede ser menor que 0 o mayor que el número de conjuntos de resultados</target>
+        <target state="new">結果集的索引不能小於 0 或大於結果集的總數</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceDataReaderByteCountInvalid">
         <source>Maximum number of bytes to return must be greater than zero</source>
-        <target state="new">El número máximo de bytes a devolver debe ser mayor que cero</target>
+        <target state="new">傳回的最大位元組數目必須大於零</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceDataReaderCharCountInvalid">
         <source>Maximum number of chars to return must be greater than zero</source>
-        <target state="new">El número máximo de caracteres a devolver debe ser mayor que cero</target>
+        <target state="new">傳回的最大字元數目必須大於零</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceDataReaderXmlCountInvalid">
         <source>Maximum number of XML bytes to return must be greater than zero</source>
-        <target state="new">El número máximo de bytes XML a devolver debe ser mayor que cero</target>
+        <target state="new">傳回的最大 XML 位元組數目必須大於零</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceFileWrapperWriteOnly">
         <source>Access method cannot be write-only</source>
-        <target state="new">El método de acceso no puede ser de sólo escritura</target>
+        <target state="new">存取方法不可以設為唯寫</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceFileWrapperNotInitialized">
         <source>FileStreamWrapper must be initialized before performing operations</source>
-        <target state="new">FileStreamWrapper debe inicializarse antes de realizar operaciones</target>
+        <target state="new">執行前，必須先初始化 FileStreamWrapper</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceFileWrapperReadOnly">
         <source>This FileStreamWrapper cannot be used for writing</source>
-        <target state="new">Este FileStreamWrapper no se puede utilizar para escritura.</target>
+        <target state="new">這個 FileStreamWrapper 不能用於寫入</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceAffectedOneRow">
         <source>(1 row affected)</source>
-        <target state="new">(1 fila afectada)</target>
+        <target state="new">（1 列受影響）</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceAffectedRows">
         <source>({0} rows affected)</source>
-        <target state="new">({0} filas afectadas)</target>
+        <target state="new">（{0} 個資料列受到影響）</target>
         
         <note>.
  Parameters: 0 - rows (long) </note>
       </trans-unit>
       <trans-unit id="QueryServiceCompletedSuccessfully">
         <source>Commands completed successfully.</source>
-        <target state="new">Comandos finalizados correctamente.</target>
+        <target state="new">命令已順利完成。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceErrorFormat">
         <source>Msg {0}, Level {1}, State {2}, Line {3}{4}{5}</source>
-        <target state="new">Msg {0}, nivel {1} estado {2}, línea {3} {4} {5}</target>
+        <target state="new">訊息 {0}，層級 {1} ，狀態 {2}，第 {3} {4} {5} 行</target>
         
         <note>.
  Parameters: 0 - msg (int), 1 - lvl (int), 2 - state (int), 3 - line (int), 4 - newLine (string), 5 - message (string) </note>
       </trans-unit>
       <trans-unit id="QueryServiceQueryFailed">
         <source>Query failed: {0}</source>
-        <target state="new">Error en la consulta: {0}</target>
+        <target state="new">查詢失敗︰ {0}</target>
         
         <note>.
  Parameters: 0 - message (string) </note>
       </trans-unit>
       <trans-unit id="QueryServiceColumnNull">
         <source>(No column name)</source>
-        <target state="new">(Ningún nombre de columna)</target>
+        <target state="new">（沒有資料行名稱）</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceRequestsNoQuery">
         <source>The requested query does not exist</source>
-        <target state="new">La consulta solicitada no existe</target>
+        <target state="new">所要求的查詢不存在</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceQueryInvalidOwnerUri">
         <source>This editor is not connected to a database</source>
-        <target state="new">Este editor no está conectado a una base de datos</target>
+        <target state="new">這個編輯器尚未連接到資料庫</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceQueryInProgress">
         <source>A query is already in progress for this editor session. Please cancel this query or wait for its completion.</source>
-        <target state="new">Una consulta ya está en curso para esta sesión de editor. Por favor, cancelar esta consulta o esperar su finalización.</target>
+        <target state="new">一個查詢已在這個編輯器工作階段。請取消這項查詢，或等待其完成。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceMessageSenderNotSql">
         <source>Sender for OnInfoMessage event must be a SqlConnection</source>
-        <target state="new">Remitente de eventos de OnInfoMessage debe ser un objeto SqlConnection</target>
+        <target state="new">OnInfoMessage 事件的寄件者必須是一個 SqlConnection。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSaveAsResultSetNotComplete">
         <source>Result cannot be saved until query execution has completed</source>
-        <target state="new">No se puede guardar el resultado hasta que haya finalizado la ejecución de la consulta</target>
+        <target state="new">完成查詢執行前無法儲存結果</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSaveAsMiscStartingError">
         <source>Internal error occurred while starting save task</source>
-        <target state="new">Error interno al iniciar el guardado de la tarea</target>
+        <target state="new">在儲存工作啟動時，發生內部錯誤</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSaveAsInProgress">
         <source>A save request to the same path is in progress</source>
-        <target state="new">Una operacion de guardado en la misma ruta se encuentra en curso</target>
+        <target state="new">相同路徑的儲存要求正在進行中</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceSaveAsFail">
         <source>Failed to save {0}: {1}</source>
-        <target state="new">Error al guardar {0}: {1}</target>
+        <target state="new">無法儲存 {0}: {1}</target>
         
         <note>.
  Parameters: 0 - fileName (string), 1 - message (string) </note>
       </trans-unit>
       <trans-unit id="QueryServiceResultSetNotRead">
         <source>Cannot read subset unless the results have been read from the server</source>
-        <target state="new">No se puede leer el subconjunto, a menos que los resultados se han leído desde el servidor</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceResultSetStartRowOutOfRange">
         <source>Start row cannot be less than 0 or greater than the number of rows in the result set</source>
-        <target state="new">Fila de inicio no puede ser menor que 0 o mayor que el número de filas en el conjunto de resultados</target>
+        <target state="new">開始資料列不能小於 0 或大於結果集中的資料列總數</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceResultSetRowCountOutOfRange">
         <source>Row count must be a positive integer</source>
-        <target state="new">La cantidad de filas debe ser un entero positivo</target>
+        <target state="new">資料列計數必須是正整數</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceResultSetNoColumnSchema">
         <source>Could not retrieve column schema for result set</source>
-        <target state="new">No se pudo recuperar el esquema de columna para el conjunto de resultados</target>
+        <target state="new">無法從結果集擷取資料行結構描述</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="QueryServiceExecutionPlanNotFound">
         <source>Could not retrieve an execution plan from the result set </source>
-        <target state="new">No se pudo recuperar un plan de ejecución del conjunto de resultados</target>
+        <target state="new">無法從結果集擷取執行計劃</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionAzureError">
         <source>This feature is currently not supported on Azure SQL DB and Data Warehouse: {0}</source>
-        <target state="new">Esta característica actualmente no se admite en la base de datos de SQL Azure y almacén de datos: {0}</target>
+        <target state="new">這項功能目前不支援 Azure SQL 資料庫和資料倉儲︰ {0}</target>
         
         <note>.
  Parameters: 0 - errorMessage (string) </note>
       </trans-unit>
       <trans-unit id="PeekDefinitionError">
         <source>An unexpected error occurred during Peek Definition execution: {0}</source>
-        <target state="new">Se ha producido un error inesperado durante la ejecución de la definición de Peek: {0}</target>
+        <target state="new">查看定義執行過程中發生未預期的錯誤︰ {0}</target>
         
         <note>.
  Parameters: 0 - errorMessage (string) </note>
       </trans-unit>
       <trans-unit id="PeekDefinitionNoResultsError">
         <source>No results were found.</source>
-        <target state="new">No se encontraron resultados.</target>
+        <target state="new">找不到任何結果。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionDatabaseError">
         <source>No database object was retrieved.</source>
-        <target state="new">No se pudo obtener ningún objeto asociado a la base de datos.</target>
+        <target state="new">沒有資料庫物件被擷取。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionNotConnectedError">
         <source>Please connect to a server.</source>
-        <target state="new">Por favor, conéctese a un servidor</target>
+        <target state="new">請連線到伺服器。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionTimedoutError">
         <source>Operation timed out.</source>
-        <target state="new">Tiempo de espera agotado para esta operación.</target>
+        <target state="new">作業逾時。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="PeekDefinitionTypeNotSupportedError">
         <source>This object type is currently not supported by this feature.</source>
-        <target state="new">Esta característica no admite actualmente este tipo de objeto.</target>
+        <target state="new">此功能目前不支援這種物件類型。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="WorkspaceServicePositionLineOutOfRange">
         <source>Position is outside of file line range</source>
-        <target state="new">Posición está fuera del intervalo de la línea de archivo</target>
+        <target state="new">位置超出檔案行範圍</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="WorkspaceServicePositionColumnOutOfRange">
         <source>Position is outside of column range for line {0}</source>
-        <target state="new">Posición está fuera del intervalo de la columna de la línea {0}</target>
+        <target state="new">第 {0} 行位置超出資料行範圍</target>
         
         <note>.
  Parameters: 0 - line (int) </note>
       </trans-unit>
       <trans-unit id="WorkspaceServiceBufferPositionOutOfOrder">
         <source>Start position ({0}, {1}) must come before or be equal to the end position ({2}, {3})</source>
-        <target state="new">Posición de inicio ({0}, {1}) debe preceder o ser igual a la posición final ({2}, {3})</target>
+        <target state="new">開始位置 （{0}，{1}） 必須先於或等於結束位置 （{2}，{3}）</target>
         
         <note>.
  Parameters: 0 - sLine (int), 1 - sCol (int), 2 - eLine (int), 3 - eCol (int) </note>
       </trans-unit>
       <trans-unit id="EE_BatchSqlMessageNoProcedureInfo">
         <source>Msg {0}, Level {1}, State {2}, Line {3}</source>
-        <target state="new">Msg {0}, {1}, nivel de estado {2}, línea {3}</target>
+        <target state="new">訊息 {0}，層級 {1} ，狀態 {2}，第 {3} 行</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchSqlMessageWithProcedureInfo">
         <source>Msg {0}, Level {1}, State {2}, Procedure {3}, Line {4}</source>
-        <target state="new">Msj {0}, {1}, nivel de estado {2}, procedimiento {3}, línea {4}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchSqlMessageNoLineInfo">
         <source>Msg {0}, Level {1}, State {2}</source>
-        <target state="new">Msg {0}, nivel {1}, {2} de estado</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchError_Exception">
         <source>An error occurred while the batch was being processed. The error message is: {0}</source>
-        <target state="new">Se produjo un error al procesar el lote. Mensaje de error: {0}</target>
+        <target state="new">處理批次時，發生錯誤。錯誤訊息是︰ {0}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchExecutionInfo_RowsAffected">
         <source>({0} row(s) affected)</source>
-        <target state="new">({0} filas afectadas)</target>
+        <target state="new">（{0} 個資料列受到影響）</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionNotYetCompleteError">
         <source>The previous execution is not yet complete.</source>
-        <target state="new">La ejecución anterior aún no está completa.</target>
+        <target state="new">前一個執行尚未完成。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ScriptError_Error">
         <source>A scripting error occurred.</source>
-        <target state="new">Se ha producido un error de secuencias de comandos.</target>
+        <target state="new">發生指令碼的錯誤。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ScriptError_ParsingSyntax">
         <source>Incorrect syntax was encountered while {0} was being parsed.</source>
-        <target state="new">Se encontró sintaxis incorrecta mientras se estaba analizando {0}.</target>
+        <target state="new">正在剖析 {0} 時遇到不正確的語法。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ScriptError_FatalError">
         <source>A fatal error occurred.</source>
-        <target state="new">Se ha producido un error grave.</target>
+        <target state="new">發生嚴重的錯誤。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionInfo_FinalizingLoop">
         <source>Execution completed {0} times...</source>
-        <target state="new">La ejecución completó {0} veces...</target>
+        <target state="new">已執行完成 {0} 次...</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionInfo_QueryCancelledbyUser">
         <source>You cancelled the query.</source>
-        <target state="new">Se canceló la consulta.</target>
+        <target state="new">您已取消查詢。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchExecutionError_Halting">
         <source>An error occurred while the batch was being executed.</source>
-        <target state="new">Se produjo un error mientras se ejecutaba el lote.</target>
+        <target state="new">執行此批次時發生錯誤。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_BatchExecutionError_Ignoring">
         <source>An error occurred while the batch was being executed, but the error has been ignored.</source>
-        <target state="new">Se produjo un error mientras se ejecutaba el lote, pero se ha omitido el error.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionInfo_InitilizingLoop">
         <source>Starting execution loop of {0} times...</source>
-        <target state="new">Iniciando bucle de ejecución de {0} veces...</target>
+        <target state="new">正在啟動 {0} 次執行迴圈...</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionError_CommandNotSupported">
         <source>Command {0} is not supported.</source>
-        <target state="new">No se admite el comando {0}.</target>
+        <target state="new">不支援命令 {0}。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ExecutionError_VariableNotFound">
         <source>The variable {0} could not be found.</source>
-        <target state="new">La variable {0} no se encontró.</target>
+        <target state="new">找不到變數 {0}。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineError">
         <source>SQL Execution error: {0}</source>
-        <target state="new">Error de ejecución de SQL: {0}</target>
+        <target state="new">SQL 執行錯誤︰ {0}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionError">
         <source>Batch parser wrapper execution: {0} found... at line {1}: {2}    Description: {3}</source>
-        <target state="new">Ejecución de contenedor del analizador por lotes: {0} se encuentra... en la línea {1}: {2} Descripción: {3}</target>
+        <target state="new">批次剖析器包裝函式執行︰位於第 {1} 行: {2} 描述︰{3} 找到 {0}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineBatchMessage">
         <source>Batch parser wrapper execution engine batch message received:  Message: {0}    Detailed message: {1}</source>
-        <target state="new">Lote analizador contenedor ejecución motor lote mensaje recibido: mensaje: {0} mensaje detallado: {1}</target>
+        <target state="new">批次剖析器包裝函式執行引擎批次所收到的訊息︰ 訊息︰ {0}，詳細的訊息︰ {1}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineBatchResultSetProcessing">
         <source>Batch parser wrapper execution engine batch ResultSet processing: DataReader.FieldCount: {0}  DataReader.RecordsAffected: {1}</source>
-        <target state="new">Motor de ejecución de analizador contenedor lote ResultSet procesamiento por lotes: DataReader.FieldCount: {0} DataReader.RecordsAffected: {1}</target>
+        <target state="new">批次剖析器包裝函式執行引擎批次結果集處理︰ DataReader.FieldCount: {0} DataReader.RecordsAffected: {1}</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineBatchResultSetFinished">
         <source>Batch parser wrapper execution engine batch ResultSet finished.</source>
-        <target state="new">Finalizó el elemento ResultSet analizador contenedor ejecución motor los lotes.</target>
+        <target state="new">批次剖析器包裝函式執行引擎批次結果集已完成。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParserWrapperExecutionEngineBatchCancelling">
         <source>Canceling batch parser wrapper batch execution.</source>
-        <target state="new">Cancelando la ejecución por lotes del contenedor del analizador por lotes.</target>
+        <target state="new">正在取消批次剖析器包裝函式的批次執行。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EE_ScriptError_Warning">
         <source>Scripting warning.</source>
-        <target state="new">Advertencia de scripting.</target>
+        <target state="new">指令碼警告。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="TroubleshootingAssistanceMessage">
         <source>For more information about this error, see the troubleshooting topics in the product documentation.</source>
-        <target state="new">Para obtener más información acerca de este error, vea los temas de solución de problemas en la documentación del producto.</target>
+        <target state="new">有關此錯誤的詳細資訊，請參閱產品文件中的疑難排解主題。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_CircularReference">
         <source>File '{0}' recursively included.</source>
-        <target state="new">El archivo '{0}' se incluyó recursivamente.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_CommentNotTerminated">
         <source>Missing end comment mark '*/'.</source>
-        <target state="new">Falta la marca de final de comentario ' * /'.</target>
+        <target state="new">遺漏結束的註解記號 ' * /'。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_StringNotTerminated">
         <source>Unclosed quotation mark after the character string.</source>
-        <target state="new">Sin comilla de cierre después de la cadena de caracteres.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_IncorrectSyntax">
         <source>Incorrect syntax was encountered while parsing '{0}'.</source>
-        <target state="new">Se encontró sintaxis incorrecta al analizar '{0}'.</target>
+        <target state="new">正在剖析 {0} 時遇到不正確的語法。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="BatchParser_VariableNotDefined">
         <source>Variable {0} is not defined.</source>
-        <target state="new">La variable {0} no está definida.</target>
+        <target state="new">未定義變數 {0}。</target>
         
         <note/>
       </trans-unit>
@@ -501,129 +494,129 @@
       </trans-unit>
       <trans-unit id="ErrorEmptyStringReplacement">
         <source>Replacement of an empty string by an empty string.</source>
-        <target state="new">Sustitución de una cadena vacía por una cadena vacía.</target>
+        <target state="new">用空白字串取代空白字串。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionNotFound">
         <source>Edit session does not exist.</source>
-        <target state="new">Sesión de edición no existe,</target>
+        <target state="new">編輯工作階段不存在</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataQueryNotCompleted">
         <source>Query has not completed execution</source>
-        <target state="new">La consulta no ha finalizado.</target>
+        <target state="new">查詢尚未完成</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataQueryImproperResultSets">
         <source>Query did not generate exactly one result set</source>
-        <target state="new">La consulta no generó un único set de resultados</target>
+        <target state="new">查詢並非產生單一結果集</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataFailedAddRow">
         <source>Failed to add new row to update cache</source>
-        <target state="new">Falló al agregar una nueva fila a la caché de actualización</target>
+        <target state="new">在 cashe 裡更新資料列失敗</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataRowOutOfRange">
         <source>Given row ID is outside the range of rows in the edit cache</source>
-        <target state="new">El ID de la fila ingresado, se encuentra fuera del rango de filas de la caché de edición</target>
+        <target state="new">提供的資料列識別碼已超出 edit cashe 中資料列的範圍</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataUpdatePending">
         <source>An update is already pending for this row and must be reverted first</source>
-        <target state="new">Una actualización está pendiente para esta fila y debe de revertirse primero</target>
+        <target state="new">這個資料列已經有一個更新正在等待使用，因此它必須先恢復原狀。</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataUpdateNotPending">
         <source>Given row ID does not have pending update</source>
-        <target state="new">El ID de la fila ingresado no tiene actualizaciones pendientes</target>
+        <target state="new">這個資料列識別碼並沒有正在等待更新</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataObjectMetadataNotFound">
         <source>Table or view metadata could not be found</source>
-        <target state="new">La metadata de la tabla o vista no pudo ser encontrada</target>
+        <target state="new">找不到資料表或檢視表中繼資料</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataInvalidFormatBinary">
         <source>Invalid format for binary column</source>
-        <target state="new">Formato inválido para columna binaria</target>
+        <target state="new">二進位資料欄格示錯誤</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataInvalidFormatBoolean">
         <source>Allowed values for boolean columns are 0, 1, &quot;true&quot;, or &quot;false&quot;</source>
-        <target state="new">Columnas del tipo boolean deben de ser numéricos 1 o 0, o tipo string true o false</target>
+        <target state="new">Boolean 欄位必須填入數字 1 或 0, 或字串 true 或 false</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataCreateScriptMissingValue">
         <source>A required cell value is missing</source>
-        <target state="new">Falta un valor requerido de la celda</target>
+        <target state="new">必填儲存格未填</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataDeleteSetCell">
         <source>A delete is pending for this row, a cell update cannot be applied.</source>
-        <target state="new">Existe una eliminación pendiente para esta fila, una actualización de celda no puede ser realizada.</target>
+        <target state="new">這個資料列即將被刪除，其中的儲存格無法被更新</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataColumnIdOutOfRange">
         <source>Column ID must be in the range of columns for the query</source>
-        <target state="new">El ID de la columna debe de estar en el rango de columnas de la consulta.</target>
+        <target state="new">資料行識別碼必須在資料行總數內才可被查詢</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataColumnCannotBeEdited">
         <source>Column cannot be edited</source>
-        <target state="new">La columna no puede ser editada</target>
+        <target state="new">資料行無法被編輯</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataColumnNoKeyColumns">
         <source>No key columns were found</source>
-        <target state="new">No se encontró ninguna columna clave</target>
+        <target state="new">找不到索引鍵資料行</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataScriptFilePathNull">
         <source>An output filename must be provided</source>
-        <target state="new">Proporcione un nombre de archivo de salida</target>
+        <target state="new">必須提供輸出檔名</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataUnsupportedObjectType">
         <source>Database object {0} cannot be used for editing.</source>
-        <target state="new">Objeto de base de datos {0} no puede ser usado para modificación.</target>
+        <target state="new">資料庫物件 {0} 無法被編輯</target>
         
         <note>.
  Parameters: 0 - typeName (string) </note>
       </trans-unit>
       <trans-unit id="ConnectionServiceDbErrorDefaultNotConnected">
         <source>Specified URI '{0}' does not have a default connection</source>
-        <target state="new">SpecifiedUri '{0}' no tiene alguna conexión por defecto</target>
+        <target state="new">指定的 URI '{0}' 沒有預設的連線</target>
         
         <note>.
  Parameters: 0 - uri (string) </note>
       </trans-unit>
       <trans-unit id="EditDataCommitInProgress">
         <source>A commit task is in progress. Please wait for completion.</source>
-        <target state="new">Una tarea de confirmación se encuentra en progreso. Por favor espere que la operación termine.</target>
+        <target state="new">認可的工作正在進行，請等待它完成</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="SqlScriptFormatterDecimalMissingPrecision">
         <source>Decimal column is missing numeric precision or numeric scale</source>
-        <target state="new">Columna del tipo decimal no tiene precisión o escala numérica</target>
+        <target state="new">十進位資料行缺少數值有效位數或小數位數</target>
         
         <note/>
       </trans-unit>
@@ -635,49 +628,44 @@
       </trans-unit>
       <trans-unit id="QueryServiceResultSetAddNoRows">
         <source>Cannot add row to result buffer, data reader does not contain rows</source>
-        <target state="new">No se pueden agregar filas al buffer de resultados, el lector de datos no contiene filas</target>
+        <target state="new">無法在結果緩衝區加資料列，資料讀取器不包含資料列</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataTimeOver24Hrs">
         <source>TIME column values must be between 00:00:00.0000000 and 23:59:59.9999999</source>
-        <target state="new">Los valores en la columna TIME deben estar incluidos en el rango desde 00:00:00:000000 hasta 23:59:59.999999</target>
+        <target state="new">TIME 欄的值範圍必須在 00:00:00.0000000 至 23:59:59.9999999 之間</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataNullNotAllowed">
         <source>NULL is not allowed for this column</source>
-        <target state="new">No se permite un valor NULL en esta columna</target>
+        <target state="new">這欄不允許填入 NULL 值</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionAlreadyExists">
         <source>Edit session already exists.</source>
-        <target state="new">La sesión de edición ya existe.</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionNotInitialized">
         <source>Edit session has not been initialized</source>
-        <target state="new">La sesión de edición no se inicializó</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionAlreadyInitialized">
         <source>Edit session has already been initialized</source>
-        <target state="new">La sesión de edición ya se inicializó</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataSessionAlreadyInitializing">
         <source>Edit session has already been initialized or is in the process of initializing</source>
-        <target state="new">La sesión de edición ya se inicializo o se encuentra en proceso de inicialización</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataQueryFailed">
         <source>Query execution failed, see messages for details</source>
-        <target state="new">La ejecución de la consulta falló, ver los mensajes para obtener mas detalle</target>
         
         <note/>
       </trans-unit>
@@ -693,7 +681,7 @@
       </trans-unit>
       <trans-unit id="EditDataMetadataObjectNameRequired">
         <source>A object name must be provided</source>
-        <target state="new">Se debe proveer un nombre de objeto</target>
+        <target state="new">必須提供物件名稱</target>
         
         <note/>
       </trans-unit>
@@ -704,13 +692,11 @@
       </trans-unit>
       <trans-unit id="EditDataMetadataNotExtended">
         <source>Table metadata does not have extended properties</source>
-        <target state="new">Los metadatos de la tabla no tienen propiedades extendidas</target>
         
         <note/>
       </trans-unit>
       <trans-unit id="EditDataObjectNotFound">
         <source>Table or view requested for edit could not be found</source>
-        <target state="new">La tabla o vista solicitada para edición no se encuentra</target>
         
         <note/>
       </trans-unit>
