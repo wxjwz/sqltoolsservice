@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using Microsoft.SqlServer.Management.Smo;
 using Microsoft.SqlTools.ServiceLayer;
 using Microsoft.SqlTools.ServiceLayer.ObjectExplorer.Nodes;
 
@@ -657,6 +658,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
+            child.NodeType = "Database";
             InitializeChild(child, context);
             return child;
         }
@@ -667,6 +669,45 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class TablesChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "Tables" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsFileTable",
+                   Type = typeof(bool),
+                   Values = new List<object> { 0 },
+                });
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsSystemObject",
+                   Type = typeof(bool),
+                   Values = new List<object> { 0 },
+                });
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsExternal",
+                   Type = typeof(bool),
+                   ValidFor = ValidForFlag.Sql2016|ValidForFlag.AzureV12,
+                   Values = new List<object> { 0 },
+                });
+                filters.Add(new NodeFilter
+                {
+                   Property = "TemporalType",
+                   Type = typeof(Enum),
+                   ValidFor = ValidForFlag.Sql2016|ValidForFlag.AzureV12,
+                   Values = new List<object>
+                   {
+                      { TableTemporalType.None },
+                      { TableTemporalType.SystemVersioned }
+                   }
+                });
+                return filters;
+           }
+        }
 
         protected override void OnExpandPopulateFolders(IList<TreeNode> currentChildren, TreeNode parent)
         {
@@ -714,6 +755,21 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class ViewsChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "Views" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsSystemObject",
+                   Type = typeof(bool),
+                   Values = new List<object> { 0 },
+                });
+                return filters;
+           }
+        }
 
         protected override void OnExpandPopulateFolders(IList<TreeNode> currentChildren, TreeNode parent)
         {
@@ -1095,6 +1151,21 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "SystemTables" }; }
 
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsSystemObject",
+                   Type = typeof(bool),
+                   Values = new List<object> { 1 },
+                });
+                return filters;
+           }
+        }
+
         internal override Type[] ChildQuerierTypes
         {
            get
@@ -1116,6 +1187,21 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class FileTablesChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "FileTables" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsFileTable",
+                   Type = typeof(bool),
+                   Values = new List<object> { 1 },
+                });
+                return filters;
+           }
+        }
 
         internal override Type[] ChildQuerierTypes
         {
@@ -1139,6 +1225,21 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "ExternalTables" }; }
 
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsExternal",
+                   Type = typeof(bool),
+                   Values = new List<object> { 1 },
+                });
+                return filters;
+           }
+        }
+
         internal override Type[] ChildQuerierTypes
         {
            get
@@ -1160,6 +1261,26 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class TableChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "Table" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "TemporalType",
+                   Type = typeof(Enum),
+                   TypeToReverse = typeof(SqlHistoryTableQuerier),
+                   ValidFor = ValidForFlag.Sql2016|ValidForFlag.AzureV12,
+                   Values = new List<object>
+                   {
+                      { TableTemporalType.HistoryTable }
+                   }
+                });
+                return filters;
+           }
+        }
 
         protected override void OnExpandPopulateFolders(IList<TreeNode> currentChildren, TreeNode parent)
         {
@@ -1205,7 +1326,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
            get
            {
-              return new [] { typeof(SqlTableQuerier), };
+              return new [] { typeof(SqlTableQuerier), typeof(SqlHistoryTableQuerier), };
            }
         }
 
@@ -1232,6 +1353,12 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
                 SortPriority = SmoTreeNode.NextSortPriority,
             });
             currentChildren.Add(new FolderNode {
+                NodeValue = SR.SchemaHierarchy_Constraints,
+                NodeType = "Folder",
+                NodeTypeId = NodeTypes.Constraints,
+                SortPriority = SmoTreeNode.NextSortPriority,
+            });
+            currentChildren.Add(new FolderNode {
                 NodeValue = SR.SchemaHierarchy_Indexes,
                 NodeType = "Folder",
                 NodeTypeId = NodeTypes.Indexes,
@@ -1249,14 +1376,14 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
            get
            {
-              return new [] { typeof(SqlTableQuerier), };
-           }
+              return new Type[0];           }
         }
 
         public override TreeNode CreateChild(TreeNode parent, object context)
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
+            child.NodeType = "Table";
             InitializeChild(child, context);
             return child;
         }
@@ -1296,6 +1423,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
+            child.NodeType = "Table";
             InitializeChild(child, context);
             return child;
         }
@@ -1331,6 +1459,27 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class KeysChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "Keys" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IndexKeyType",
+                   Type = typeof(Enum),
+                   TypeToReverse = typeof(SqlIndexQuerier),
+                   ValidFor = ValidForFlag.Sql2016|ValidForFlag.AzureV12,
+                   Values = new List<object>
+                   {
+                      { IndexKeyType.DriPrimaryKey },
+                      { IndexKeyType.DriUniqueKey }
+                   }
+                });
+                return filters;
+           }
+        }
 
         internal override Type[] ChildQuerierTypes
         {
@@ -1404,6 +1553,26 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "Indexes" }; }
 
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IndexKeyType",
+                   Type = typeof(Enum),
+                   TypeToReverse = typeof(SqlIndexQuerier),
+                   ValidFor = ValidForFlag.Sql2016|ValidForFlag.AzureV12,
+                   Values = new List<object>
+                   {
+                      { IndexKeyType.None }
+                   }
+                });
+                return filters;
+           }
+        }
+
         internal override Type[] ChildQuerierTypes
         {
            get
@@ -1416,7 +1585,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
-            child.NodeType = "Indexe";
+            child.NodeType = "Index";
             InitializeChild(child, context);
             return child;
         }
@@ -1451,6 +1620,21 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class SystemViewsChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "SystemViews" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsSystemObject",
+                   Type = typeof(bool),
+                   Values = new List<object> { 1 },
+                });
+                return filters;
+           }
+        }
 
         internal override Type[] ChildQuerierTypes
         {
@@ -1513,6 +1697,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
+            child.NodeType = "View";
             InitializeChild(child, context);
             return child;
         }
@@ -1598,7 +1783,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
-            child.NodeType = "Assemblie";
+            child.NodeType = "Assembly";
             InitializeChild(child, context);
             return child;
         }
@@ -1936,6 +2121,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
+            child.NodeType = "UserDefinedTableType";
             InitializeChild(child, context);
             return child;
         }
@@ -1971,6 +2157,27 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class UserDefinedTableTypeKeysChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "UserDefinedTableTypeKeys" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IndexKeyType",
+                   Type = typeof(Enum),
+                   TypeToReverse = typeof(SqlIndexQuerier),
+                   ValidFor = ValidForFlag.Sql2016|ValidForFlag.AzureV12,
+                   Values = new List<object>
+                   {
+                      { IndexKeyType.DriPrimaryKey },
+                      { IndexKeyType.DriUniqueKey }
+                   }
+                });
+                return filters;
+           }
+        }
 
         internal override Type[] ChildQuerierTypes
         {
@@ -2192,7 +2399,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
            get
            {
-              return new [] { typeof(SqlUserDefinedTypeQuerier), };
+              return new [] { typeof(SqlBuiltInTypeQuerier), };
            }
         }
 
@@ -2216,7 +2423,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
            get
            {
-              return new [] { typeof(SqlUserDefinedTypeQuerier), };
+              return new [] { typeof(SqlBuiltInTypeQuerier), };
            }
         }
 
@@ -2284,6 +2491,21 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "StoredProcedures" }; }
 
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsSystemObject",
+                   Type = typeof(bool),
+                   Values = new List<object> { 0 },
+                });
+                return filters;
+           }
+        }
+
         protected override void OnExpandPopulateFolders(IList<TreeNode> currentChildren, TreeNode parent)
         {
             currentChildren.Add(new FolderNode {
@@ -2316,6 +2538,21 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class SystemStoredProceduresChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "SystemStoredProcedures" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsSystemObject",
+                   Type = typeof(bool),
+                   Values = new List<object> { 1 },
+                });
+                return filters;
+           }
+        }
 
         internal override Type[] ChildQuerierTypes
         {
@@ -2360,6 +2597,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
+            child.NodeType = "StoredProcedure";
             InitializeChild(child, context);
             return child;
         }
@@ -2395,6 +2633,31 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class TableValuedFunctionsChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "TableValuedFunctions" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "FunctionType",
+                   Type = typeof(Enum),
+                   ValidFor = ValidForFlag.Sql2016|ValidForFlag.AzureV12,
+                   Values = new List<object>
+                   {
+                      { UserDefinedFunctionType.Table }
+                   }
+                });
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsSystemObject",
+                   Type = typeof(bool),
+                   Values = new List<object> { 0 },
+                });
+                return filters;
+           }
+        }
 
         internal override Type[] ChildQuerierTypes
         {
@@ -2439,6 +2702,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
+            child.NodeType = "TableValuedFunction";
             InitializeChild(child, context);
             return child;
         }
@@ -2474,6 +2738,31 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
     internal partial class ScalarValuedFunctionsChildFactory : SmoChildFactoryBase
     {
         public override IEnumerable<string> ApplicableParents() { return new[] { "ScalarValuedFunctions" }; }
+
+        public override IEnumerable<NodeFilter> Filters
+        {
+           get
+           {
+                var filters = new List<NodeFilter>();
+                filters.Add(new NodeFilter
+                {
+                   Property = "FunctionType",
+                   Type = typeof(Enum),
+                   ValidFor = ValidForFlag.Sql2016|ValidForFlag.AzureV12,
+                   Values = new List<object>
+                   {
+                      { UserDefinedFunctionType.Scalar }
+                   }
+                });
+                filters.Add(new NodeFilter
+                {
+                   Property = "IsSystemObject",
+                   Type = typeof(bool),
+                   Values = new List<object> { 0 },
+                });
+                return filters;
+           }
+        }
 
         internal override Type[] ChildQuerierTypes
         {
@@ -2518,6 +2807,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
+            child.NodeType = "ScalarValuedFunction";
             InitializeChild(child, context);
             return child;
         }
@@ -2597,6 +2887,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
+            child.NodeType = "AggregateFunction";
             InitializeChild(child, context);
             return child;
         }
@@ -2669,7 +2960,7 @@ namespace Microsoft.SqlTools.ServiceLayer.ObjectExplorer.SmoModel
         {
             var child = new SmoTreeNode();
             child.IsAlwaysLeaf = true;
-            child.NodeType = "BrokerPrioritie";
+            child.NodeType = "BrokerPriority";
             InitializeChild(child, context);
             return child;
         }
