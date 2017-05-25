@@ -195,9 +195,10 @@ Task("Restore")
     .IsDependentOn("Setup")
     .Does(() =>
 {
-    RunRestore(dotnetcli, "restore", sourceFolder)
+    RunRestore(dotnetcli, "restore --verbosity diagnostic", sourceFolder)
         .ExceptionOnError("Failed to restore projects under source code folder.");
-    RunRestore(dotnetcli, "restore --infer-runtimes", testFolder)
+
+    RunRestore(dotnetcli, "restore --verbosity diagnostic --infer-runtimes", testFolder)
         .ExceptionOnError("Failed to restore projects under test code folder.");
 });
 
